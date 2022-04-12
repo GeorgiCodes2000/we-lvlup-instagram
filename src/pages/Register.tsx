@@ -1,13 +1,15 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { ReactElement, useState } from 'react'
+import { ReactElement, useContext, useState } from 'react'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { collection, addDoc } from 'firebase/firestore'
 import { useNavigate, Link } from 'react-router-dom'
 import { auth, db } from '../firebase.config.js'
+import { UserContext } from '../UserContext'
 
 export function Register(): ReactElement | null {
     const navigate = useNavigate()
+    const user = useContext(UserContext)
 
     const [registerEmail, setRegisterEmail] = useState('')
     const [registerPassword, setRegisterPassword] = useState('')
@@ -29,6 +31,8 @@ export function Register(): ReactElement | null {
             ).then((res) => {
                 console.log(res)
                 localStorage.setItem('user', JSON.stringify(res))
+                console.log(res.user)
+                user?.setUser(res)
                 async function saveUser(): Promise<void> {
                     await addDoc(users, {
                         registerEmail,
@@ -38,7 +42,7 @@ export function Register(): ReactElement | null {
                     })
                 }
                 saveUser()
-                navigate('/home')
+                navigate('/')
             })
         } catch (error) {
             if (error instanceof Error) {

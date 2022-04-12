@@ -1,15 +1,14 @@
-import { createContext, ReactElement, useMemo, useState } from 'react'
+import { ReactElement, useMemo, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Register } from './pages/Register'
 import { Login } from './pages/Login'
 import { Home } from './pages/Home'
 import './App.scss'
+import { UserContext } from './UserContext'
 
-export const UserContext = createContext<object | null>(null)
 function App(): ReactElement | null {
-    const [user, setUser] = useState(
-        JSON.parse(localStorage.getItem('user') || '{}')
-    )
+    const userObj = JSON.parse(localStorage.getItem('user') || '{}')
+    const [user, setUser] = useState(userObj)
 
     return (
         <UserContext.Provider

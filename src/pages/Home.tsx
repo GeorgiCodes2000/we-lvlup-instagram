@@ -1,5 +1,13 @@
-import { ReactElement } from 'react'
+import { ReactElement, useContext } from 'react'
+import { UserContext } from '../App'
+import Navbar from '../components/Navbar'
 
 export function Home(): ReactElement | null {
-    return <div>Home</div>
+    const user = useContext(UserContext)
+    console.log(user || null)
+    return (
+        <div>
+            <Navbar />
+        </div>
+    )
 }

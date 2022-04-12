@@ -1,5 +1,4 @@
 import { ReactElement } from 'react'
-
 import '../styles/pages/navbar.scss'
 import { Link } from 'react-router-dom'
 
@@ -8,7 +7,7 @@ function Navbar(): ReactElement | null {
         <div className="navigation">
             <div className="logo">
                 <Link className="no-underline" to="/">
-                    MimoudiX
+                    Instagram
                 </Link>
             </div>
             <div className="navigation-search-container">

@@ -3,10 +3,12 @@
 import { ReactElement, useState } from 'react'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { collection, addDoc } from 'firebase/firestore'
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { auth, db } from '../firebase.config.js'
 
 export function Register(): ReactElement | null {
+    const navigate = useNavigate()
+
     const [registerEmail, setRegisterEmail] = useState('')
     const [registerPassword, setRegisterPassword] = useState('')
     const [fullName, setFullName] = useState('')
@@ -36,6 +38,7 @@ export function Register(): ReactElement | null {
                     })
                 }
                 saveUser()
+                navigate('/home')
             })
         } catch (error) {
             if (error instanceof Error) {
@@ -139,9 +142,9 @@ export function Register(): ReactElement | null {
                             </div>
                         </form>
                         <div className="bg-white py-4 px-5 text-center border mt-4">
-                            {/* <p className="m-0">
+                            <p className="m-0">
                                 Have an account? <Link to="/login">Log in</Link>
-                            </p> */}
+                            </p>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { ReactElement } from 'react'
+import { Link } from 'react-router-dom'
 
 export function Login(): ReactElement | null {
     return (
@@ -65,6 +66,7 @@ export function Login(): ReactElement | null {
                         <div className="bg-white py-4 px-5 text-center border mt-4">
                             <p className="m-0">
                                 You do not have account yet ?{' '}
+                                <Link to="/register">Register</Link>
                             </p>
                         </div>
                     </div>

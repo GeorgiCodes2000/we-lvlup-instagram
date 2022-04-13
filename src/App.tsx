@@ -5,6 +5,8 @@ import { Login } from './pages/Login'
 import { Home } from './pages/Home'
 import './App.scss'
 import { UserContext } from './UserContext'
+import { NotFound } from './pages/NotFound'
+import { Profile } from './pages/Profile'
 
 function App(): ReactElement | null {
     const userObj = JSON.parse(localStorage.getItem('user') || '{}')
@@ -22,9 +24,17 @@ function App(): ReactElement | null {
         >
             <Router>
                 <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/login" element={<Login />} />
+                    <Route path="*" element={<NotFound />} />
+                    {user.user ? <Route path="/" element={<Home />} /> : null}
+                    {user.user ? (
+                        <Route path="/profile" element={<Profile />} />
+                    ) : null}
+                    {!user.user ? (
+                        <Route path="/register" element={<Register />} />
+                    ) : null}
+                    {!user.user ? (
+                        <Route path="/login" element={<Login />} />
+                    ) : null}
                 </Routes>
             </Router>
         </UserContext.Provider>

@@ -39,6 +39,8 @@ export function Register(): ReactElement | null {
                         usernameInp,
                         fullNameInp,
                         followers: [],
+                        following: [],
+                        avatar: '',
                     })
                 }
                 saveUser()

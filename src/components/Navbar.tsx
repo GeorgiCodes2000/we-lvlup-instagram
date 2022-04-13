@@ -47,7 +47,7 @@ function Navbar(): ReactElement | null {
                 <Link to="/" className="navigation-link notifica">
                     <i className="far fa-heart" />
                 </Link>
-                <Link to="/" className="navigation-link">
+                <Link to="/profile" className="navigation-link">
                     <i className="far fa-user-circle" />
                 </Link>
                 <Link to="/" className="navigation-link" onClick={signUserOut}>

@@ -29,9 +29,8 @@ export function Register(): ReactElement | null {
                 registerEmailInp,
                 registerPasswordInp
             ).then((res) => {
-                console.log(res)
                 localStorage.setItem('user', JSON.stringify(res))
-                console.log(res.user)
+
                 user?.setUser(res)
                 async function saveUser(): Promise<void> {
                     await addDoc(users, {
@@ -49,7 +48,7 @@ export function Register(): ReactElement | null {
             })
         } catch (error) {
             if (error instanceof Error) {
-                console.log(error.message)
+                console.log(error)
             }
         }
     }

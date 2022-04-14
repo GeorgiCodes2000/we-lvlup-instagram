@@ -1,54 +1,22 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { ReactElement, useContext, useEffect, useState } from 'react'
-import {
-    collection,
-    query,
-    where,
-    getDocs,
-    CollectionReference,
-    doc,
-    updateDoc,
-} from 'firebase/firestore'
+import { ReactElement, useState } from 'react'
+import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase.config.js'
-import { UserContext } from '../UserContext'
 import { UserQueryType } from '../UserQueryType.js'
 import Navbar from '../components/Navbar'
 
-export function Profile(): ReactElement | null {
-    const [profileUser, SetProfileUser] = useState<UserQueryType | undefined>()
-    // eslint-disable-next-line no-unused-vars
+export function Profile({
+    profileUser,
+    getProfile,
+}: {
+    profileUser: UserQueryType | undefined
+    getProfile: any
+}): ReactElement | null {
+    // const [profileUser, SetProfileUser] = useState<UserQueryType | undefined>()
     const [edit, setEdit] = useState(false)
-    const [bioText, setBioText] = useState<string>('')
-
-    const user = useContext(UserContext)
-
-    async function getProfile(): Promise<void> {
-        const usersRef = collection(
-            db,
-            'users'
-        ) as CollectionReference<UserQueryType>
-        const q = await query(
-            usersRef,
-            where('registerEmail', '==', user?.user?.user?.email)
-        )
-
-        const querySnapshot = await getDocs(q)
-
-        querySnapshot.forEach((doC) => {
-            if (doC.data()) {
-                const obj = { ...doC.data() }
-                obj.id = doC.id
-                setBioText(obj?.aboutInfo)
-                SetProfileUser(obj)
-            }
-        })
-
-        console.log(profileUser?.fullNameInp)
-    }
-
-    useEffect(() => {
-        getProfile()
-    }, [])
+    const [bioText, setBioText] = useState<string | undefined>(
+        profileUser?.aboutInfo
+    )
 
     return (
         <>

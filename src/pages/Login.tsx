@@ -22,13 +22,12 @@ export function Login(): ReactElement | null {
                 loginEmailInp,
                 loginPasswordInp
             )
-            console.log(user)
             userContext?.setUser(user)
             localStorage.setItem('user', JSON.stringify(user))
             navigate('/')
         } catch (error) {
             if (error instanceof Error) {
-                console.log(error.message)
+                console.log(error)
             }
         }
     }

@@ -41,6 +41,7 @@ export function Register(): ReactElement | null {
                         followers: [],
                         following: [],
                         avatar: '',
+                        aboutInfo: '',
                     })
                 }
                 saveUser()
@@ -81,8 +82,8 @@ export function Register(): ReactElement | null {
                                     className="btn btn-primary d-block bg-gradient"
                                     href="#"
                                 >
-                                    <i className="fab fa-facebook" /> Log in
-                                    with facebook
+                                    <i className="fab fa-google" /> Log in with
+                                    Google
                                 </a>
                                 <p className="my-3 text-center or">OR</p>
                             </div>

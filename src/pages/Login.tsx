@@ -56,8 +56,8 @@ export function Login(): ReactElement | null {
                                     type="button"
                                     className="btn btn-primary d-block bg-gradient"
                                 >
-                                    <i className="fab fa-facebook" /> Log in
-                                    with facebook
+                                    <i className="fab fa-google" /> Log in with
+                                    Google
                                 </a>
                                 <p className="my-3 text-center or">OR</p>
                             </div>

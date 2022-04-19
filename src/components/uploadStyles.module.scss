@@ -1,0 +1,35 @@
+ 
+.uploadBtn {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.uploadImg {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.uploadBtn {
+  font-size: 18px;
+  border: none;
+  background: #fef289;
+  color: #000;
+}
+
+.container {
+    min-height: 20vh;
+    padding: 0 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .form{
+    display: flex;
+    flex-direction: column;
+  }

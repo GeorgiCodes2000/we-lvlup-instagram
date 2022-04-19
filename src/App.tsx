@@ -17,6 +17,7 @@ import { NotFound } from './pages/NotFound'
 import { Profile } from './pages/Profile'
 import { UserQueryType } from './UserQueryType.js'
 import { db } from './firebase.config.js'
+import Upload from './components/Upload'
 
 function App(): ReactElement | null {
     const userContext = useContext(UserContext)
@@ -65,6 +66,9 @@ function App(): ReactElement | null {
                             />
                         }
                     />
+                ) : null}
+                {userContext?.user.user ? (
+                    <Route path="/upload" element={<Upload />} />
                 ) : null}
                 {!userContext?.user.user ? (
                     <Route path="/register" element={<Register />} />

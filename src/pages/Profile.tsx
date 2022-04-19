@@ -4,6 +4,7 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase.config.js'
 import { UserQueryType } from '../UserQueryType.js'
 import Navbar from '../components/Navbar'
+import Upload from '../components/Upload'
 
 export function Profile({
     profileUser,
@@ -53,7 +54,7 @@ export function Profile({
                                         {profileUser &&
                                             profileUser.avatar.length > 0 && (
                                                 <img
-                                                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                                                    src={profileUser.avatar}
                                                     alt="Generic placeholder"
                                                     className="img-fluid img-thumbnail mt-4 mb-2"
                                                     style={{
@@ -109,11 +110,18 @@ export function Profile({
                                         </div>
                                     </div>
                                 </div>
+
                                 <div className="card-body p-4 text-black">
                                     <div className="mb-5">
                                         <p className="lead fw-normal mb-1">
                                             About
                                         </p>
+                                        {edit && (
+                                            <Upload
+                                                getProfile={getProfile}
+                                                profileUser={profileUser}
+                                            />
+                                        )}
                                         <div
                                             className="p-4"
                                             style={{

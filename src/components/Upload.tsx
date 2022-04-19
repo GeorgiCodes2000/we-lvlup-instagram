@@ -1,55 +1,108 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { useState } from 'react'
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-import { storage } from '../firebase.config.js'
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import { doc, updateDoc } from 'firebase/firestore'
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
+import { ReactElement, useContext, useEffect, useRef, useState } from 'react'
+import { db, storage } from '../firebase.config.js'
+import { UserContext } from '../UserContext'
+import styles from './uploadStyles.module.scss'
 
-function Upload() {
-    const [selectedImage, setSelectedImage] = useState<File | undefined>()
+export default function Upload({
+    getProfile,
+    profileUser,
+}: any): ReactElement | null {
+    const userContext = useContext(UserContext)
+    const fileInputRef = useRef() as React.MutableRefObject<HTMLInputElement>
+    const [image, setImage] = useState<File>()
+    const [preview, setPreview] = useState<string | null>()
 
-    // This function will be triggered when the file field change
-    const imageChange = (e: Event) => {
-        const input = e.target as HTMLInputElement
-        if (input.files && input.files.length > 0) {
-            setSelectedImage(input.files[0])
+    const uploadToDb = (file: File): void => {
+        const storageRef = ref(
+            storage,
+            `/${userContext?.user.user.uid}/${file.name}`
+        )
+        const uploadTask = uploadBytesResumable(storageRef, file)
+        uploadTask.on('state_changed', (snapshot) => {
+            getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                ;(async () => {
+                    await updateDoc(doc(db, 'users', String(profileUser?.id)), {
+                        avatar: url,
+                    })
+                    getProfile()
+                })()
+            })
+        })
+    }
+
+    useEffect(() => {
+        if (image !== undefined) {
+            const reader = new FileReader()
+            reader.onload = () => {
+                setPreview(reader.result as string)
+            }
+            reader.readAsDataURL(image)
+        } else {
+            setPreview(null)
         }
-    }
-
-    // This function will be triggered when the "Remove This Image" button is clicked
-    const removeSelectedImage = () => {
-        setSelectedImage(undefined)
-    }
-
-    // const imagesListRef = ref(storage, 'avatars/')
-    // const uploadFile = () => {
-    //     if (selectedImage == null) return
-    //     const imageRef = ref(storage, `images/${selectedImage.name}`)
-    //     uploadBytes(imageRef, selectedImage).then((snapshot) => {
-    //         getDownloadURL(snapshot.ref)
-    //             .then((url) => {})
-    //             .catch((error) => console.log(error))
-    //     })
-    // }
+    }, [image])
 
     return (
-        <div>
-            <input
-                accept="image/*"
-                type="file"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    imageChange(e as unknown as Event)
-                }}
-            />
-
-            {selectedImage && (
-                <div>
-                    <img src={URL.createObjectURL(selectedImage)} alt="Thumb" />
-                    <button type="button" onClick={removeSelectedImage}>
-                        Remove This Image
+        <div className={styles.container}>
+            <form className={styles.form}>
+                {preview ? (
+                    <img
+                        className={styles.uploadImg}
+                        src={preview}
+                        style={{ objectFit: 'cover' }}
+                        alt="nothing"
+                        onClick={() => {
+                            setImage(undefined)
+                        }}
+                    />
+                ) : (
+                    <button
+                        className={styles.uploadBtn}
+                        type="button"
+                        onClick={(event) => {
+                            event.preventDefault()
+                            fileInputRef.current.click()
+                            console.log('??')
+                        }}
+                    >
+                        Change profile
                     </button>
-                </div>
-            )}
+                )}
+                <input
+                    type="file"
+                    style={{ display: 'none' }}
+                    ref={fileInputRef}
+                    accept="images/*"
+                    onChange={(event) => {
+                        if (event.target.files) {
+                            const file = event.target.files[0]
+                            setImage(file)
+                        }
+                    }}
+                />
+                <button
+                    type="submit"
+                    onClick={(event) => {
+                        event.preventDefault()
+                        if (image) {
+                            uploadToDb(image)
+                        }
+                    }}
+                >
+                    Post
+                </button>
+            </form>
+            {/* {preview && preview?.length > 2 ? (
+                <img
+                    src={preview}
+                    alt="nothing"
+                    style={{ objectFit: 'cover' }}
+                />
+            ) : null} */}
         </div>
     )
 }
-
-export default Upload

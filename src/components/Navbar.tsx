@@ -2,13 +2,62 @@ import { ReactElement, useContext } from 'react'
 import '../styles/pages/navbar.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import { signOut } from 'firebase/auth'
-import { auth } from '../firebase.config.js'
+import {
+    collection,
+    CollectionReference,
+    getDocs,
+    query,
+    where,
+} from 'firebase/firestore'
+import { auth, db } from '../firebase.config.js'
 import { UserContext } from '../UserContext'
+import { UserQueryType } from '../UserQueryType'
+import { SearchInputContext } from '../SearchInputContext'
+import { SearchUserContext } from '../SearchedProfilesContext'
 
 function Navbar(): ReactElement | null {
     const user = useContext(UserContext)
-
+    const input = useContext(SearchInputContext)
+    const searchUsers = useContext(SearchUserContext)
     const navigate = useNavigate()
+
+    async function getProfile(): Promise<void> {
+        const arr: UserQueryType[] = []
+        const text = input?.input
+        console.log(text?.length)
+        const end = text?.replace(/.$/, (c: string) =>
+            String.fromCharCode(c.charCodeAt(0) + 1)
+        )
+        console.log('tuka inputa')
+        const usersRef = collection(
+            db,
+            'users'
+        ) as CollectionReference<UserQueryType>
+        const q = await query(
+            usersRef,
+            where('fullNameInp', '>=', text),
+            where('fullNameInp', '<', end)
+        )
+
+        const querySnapshot = await getDocs(q)
+
+        querySnapshot.forEach((doC) => {
+            if (doC.data()) {
+                const obj = { ...doC.data() }
+                obj.id = doC.id
+                arr.push(obj)
+            }
+        })
+        if (arr.length > 0) {
+            console.log(input?.input.length)
+            searchUsers?.setSearchedUser(arr)
+            navigate('/')
+        }
+        if (input?.input && input.input.length <= 1) {
+            searchUsers?.setSearchedUser([])
+        }
+    }
+
     const signUserOut = (): void => {
         signOut(auth)
             .then(() => {
@@ -33,6 +82,12 @@ function Navbar(): ReactElement | null {
                     className="search-field"
                     type="text"
                     placeholder="Search"
+                    value={input?.input}
+                    onChange={(event) => {
+                        input?.setInput(event.target.value)
+
+                        getProfile()
+                    }}
                 />
                 <div className="search-container">
                     <div className="search-container-box">

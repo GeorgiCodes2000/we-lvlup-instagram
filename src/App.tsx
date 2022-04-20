@@ -17,10 +17,13 @@ import { NotFound } from './pages/NotFound'
 import { Profile } from './pages/Profile'
 import { UserQueryType } from './UserQueryType.js'
 import { db } from './firebase.config.js'
-import Upload from './components/Upload'
+import { SerachInputProvider } from './SearchInputProvider'
+import { SearchUserProvider } from './SearchedProfilesProvider'
+import { ProfileForeign } from './pages/PorfileForeign'
 
 function App(): ReactElement | null {
     const userContext = useContext(UserContext)
+    console.log(userContext?.user.user)
 
     const [profileUser, SetProfileUser] = useState<UserQueryType | undefined>()
 
@@ -47,37 +50,44 @@ function App(): ReactElement | null {
 
     useEffect(() => {
         getProfile()
-    }, [])
+    }, [userContext])
 
     return (
-        <Router>
-            <Routes>
-                <Route path="*" element={<NotFound />} />
-                {userContext?.user.user ? (
-                    <Route path="/" element={<Home />} />
-                ) : null}
-                {userContext?.user.user ? (
-                    <Route
-                        path="/profile"
-                        element={
-                            <Profile
-                                profileUser={profileUser}
-                                getProfile={getProfile}
+        <SerachInputProvider>
+            <SearchUserProvider>
+                <Router>
+                    <Routes>
+                        <Route path="*" element={<NotFound />} />
+                        {userContext?.user.user ? (
+                            <Route path="/" element={<Home />} />
+                        ) : null}
+                        {userContext?.user.user ? (
+                            <Route
+                                path="/profile"
+                                element={
+                                    <Profile
+                                        profileUser={profileUser}
+                                        getProfile={getProfile}
+                                    />
+                                }
                             />
-                        }
-                    />
-                ) : null}
-                {userContext?.user.user ? (
-                    <Route path="/upload" element={<Upload />} />
-                ) : null}
-                {!userContext?.user.user ? (
-                    <Route path="/register" element={<Register />} />
-                ) : null}
-                {!userContext?.user.user ? (
-                    <Route path="/login" element={<Login />} />
-                ) : null}
-            </Routes>
-        </Router>
+                        ) : null}
+                        {userContext?.user.user ? (
+                            <Route
+                                path="/profile/:id"
+                                element={<ProfileForeign />}
+                            />
+                        ) : null}
+                        {!userContext?.user.user ? (
+                            <Route path="/register" element={<Register />} />
+                        ) : null}
+                        {!userContext?.user.user ? (
+                            <Route path="/login" element={<Login />} />
+                        ) : null}
+                    </Routes>
+                </Router>
+            </SearchUserProvider>
+        </SerachInputProvider>
     )
 }
 export default App

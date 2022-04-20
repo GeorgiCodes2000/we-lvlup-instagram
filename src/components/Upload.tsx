@@ -22,7 +22,7 @@ export default function Upload({
             `/${userContext?.user.user.uid}/${file.name}`
         )
         const uploadTask = uploadBytesResumable(storageRef, file)
-        uploadTask.on('state_changed', (snapshot) => {
+        uploadTask.on('state_changed', () => {
             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                 ;(async () => {
                     await updateDoc(doc(db, 'users', String(profileUser?.id)), {
@@ -86,6 +86,7 @@ export default function Upload({
                 />
                 <button
                     type="submit"
+                    className="btn btn-primary"
                     onClick={(event) => {
                         event.preventDefault()
                         if (image) {

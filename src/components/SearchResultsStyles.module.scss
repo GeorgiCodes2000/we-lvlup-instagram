@@ -1,0 +1,32 @@
+.searchContainer{
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.resultDiv{
+    width: 550px;
+    height: 150px;
+    background-color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid pink;
+     
+        img {
+            height: 130px;
+            width: 130px;
+        }
+
+        p {
+            font-weight: 600;
+        }
+      
+}
+
+.link {
+    text-decoration: none;
+    color: black !important;
+  }

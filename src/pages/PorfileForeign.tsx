@@ -1,31 +1,34 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import { doc, getDoc } from 'firebase/firestore'
 import { ReactElement, useContext, useEffect, useState } from 'react'
-import { doc, updateDoc } from 'firebase/firestore'
-import { db } from '../firebase.config.js'
-import { UserQueryType } from '../UserQueryType.js'
+import { useParams } from 'react-router-dom'
 import Navbar from '../components/Navbar'
-import Upload from '../components/Upload'
+import { db } from '../firebase.config.js'
 import { SearchUserContext } from '../SearchedProfilesContext'
 import { SearchInputContext } from '../SearchInputContext'
 
-export function Profile({
-    profileUser,
-    getProfile,
-}: {
-    profileUser: UserQueryType | undefined
-    getProfile: any
-}): ReactElement | null {
+export function ProfileForeign(): ReactElement | null {
     // const [profileUser, SetProfileUser] = useState<UserQueryType | undefined>()
-    const [edit, setEdit] = useState(false)
-    const [bioText, setBioText] = useState<string | undefined>(
-        profileUser?.aboutInfo
-    )
+    const { id } = useParams()
+    const [user, setUser] = useState<any>()
     const searchUsers = useContext(SearchUserContext)
     const input = useContext(SearchInputContext)
+    async function getProfile(): Promise<void> {
+        const docRef = doc(db, 'users', String(id))
+        const docSnap = await getDoc(docRef)
 
+        if (docSnap.exists()) {
+            console.log('Document data:', docSnap.data())
+            setUser(docSnap.data())
+        } else {
+            // doc.data() will be undefined in this case
+            console.log('No such document!')
+        }
+    }
     useEffect(() => {
         searchUsers?.setSearchedUser([])
         input?.setInput('')
+        getProfile()
     }, [])
 
     return (
@@ -47,34 +50,32 @@ export function Profile({
                                         className="ms-4 mt-5 d-flex flex-column"
                                         style={{ width: '150px' }}
                                     >
-                                        {profileUser &&
-                                            profileUser.avatar.length > 0 && (
-                                                <img
-                                                    src={profileUser.avatar}
-                                                    alt="Generic placeholder"
-                                                    className="img-fluid img-thumbnail mt-4 mb-2"
-                                                    style={{
-                                                        width: '150px',
-                                                        zIndex: 1,
-                                                    }}
-                                                />
-                                            )}
+                                        {user && user.avatar.length > 0 && (
+                                            <img
+                                                src={user.avatar}
+                                                alt="Generic placeholder"
+                                                className="img-fluid img-thumbnail mt-4 mb-2"
+                                                style={{
+                                                    width: '150px',
+                                                    zIndex: 1,
+                                                }}
+                                            />
+                                        )}
 
                                         <button
                                             type="button"
                                             className="btn btn-outline-dark"
                                             data-mdb-ripple-color="dark"
                                             style={{ zIndex: 1 }}
-                                            onClick={() => setEdit(!edit)}
                                         >
-                                            Edit profile
+                                            Follow
                                         </button>
                                     </div>
                                     <div
                                         className="ms-3"
                                         style={{ marginTop: '130px' }}
                                     >
-                                        <h5>{profileUser?.fullNameInp}</h5>
+                                        <h5>{user?.fullNameInp}</h5>
                                     </div>
                                 </div>
                                 <div
@@ -90,7 +91,7 @@ export function Profile({
                                         </div>
                                         <div className="px-3">
                                             <p className="mb-1 h5">
-                                                {profileUser?.followers.length}
+                                                {user?.followers.length}
                                             </p>
                                             <p className="small text-muted mb-0">
                                                 Followers
@@ -98,7 +99,7 @@ export function Profile({
                                         </div>
                                         <div>
                                             <p className="mb-1 h5">
-                                                {profileUser?.following?.length}
+                                                {user?.following?.length}
                                             </p>
                                             <p className="small text-muted mb-0">
                                                 Following
@@ -112,68 +113,16 @@ export function Profile({
                                         <p className="lead fw-normal mb-1">
                                             About
                                         </p>
-                                        {edit && (
-                                            <Upload
-                                                getProfile={getProfile}
-                                                profileUser={profileUser}
-                                            />
-                                        )}
+
                                         <div
                                             className="p-4"
                                             style={{
                                                 backgroundColor: '#f8f9fa',
                                             }}
                                         >
-                                            <div className="form-outline">
-                                                {edit && (
-                                                    <div className="input-group mb-3">
-                                                        <input
-                                                            type="text"
-                                                            className="form-control"
-                                                            placeholder=""
-                                                            aria-label="Example text with button addon"
-                                                            aria-describedby="button-addon1"
-                                                            value={bioText}
-                                                            onChange={(
-                                                                e: React.FormEvent<HTMLInputElement>
-                                                            ) => {
-                                                                setBioText(
-                                                                    e
-                                                                        .currentTarget
-                                                                        .value
-                                                                )
-                                                            }}
-                                                        />
-                                                        <button
-                                                            className="btn btn-outline-primary"
-                                                            type="button"
-                                                            id="button-addon1"
-                                                            data-mdb-ripple-color="dark"
-                                                            onClick={async () => {
-                                                                await updateDoc(
-                                                                    doc(
-                                                                        db,
-                                                                        'users',
-                                                                        String(
-                                                                            profileUser?.id
-                                                                        )
-                                                                    ),
-                                                                    {
-                                                                        aboutInfo:
-                                                                            bioText,
-                                                                    }
-                                                                )
-                                                                getProfile()
-                                                                setEdit(false)
-                                                            }}
-                                                        >
-                                                            Edit
-                                                        </button>
-                                                    </div>
-                                                )}
-                                            </div>
+                                            <div className="form-outline" />
                                             <p className="font-italic mb-1">
-                                                {profileUser?.aboutInfo}
+                                                {user?.aboutInfo}
                                             </p>
                                         </div>
                                     </div>

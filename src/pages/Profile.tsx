@@ -4,9 +4,9 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase.config.js'
 import { UserQueryType } from '../UserQueryType.js'
 import Navbar from '../components/Navbar'
-import Upload from '../components/Upload'
 import { SearchUserContext } from '../SearchedProfilesContext'
-import { SearchInputContext } from '../SearchInputContext'
+import { SearchInputContext } from '../contexts/SearchInputContext/SearchInputContext'
+import UploadAvatar from '../components/UploadAvatar'
 
 export function Profile({
     profileUser,
@@ -113,7 +113,7 @@ export function Profile({
                                             About
                                         </p>
                                         {edit && (
-                                            <Upload
+                                            <UploadAvatar
                                                 getProfile={getProfile}
                                                 profileUser={profileUser}
                                             />

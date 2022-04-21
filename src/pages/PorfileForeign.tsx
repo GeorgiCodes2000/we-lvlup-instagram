@@ -1,30 +1,88 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { ReactElement, useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Navbar from '../components/Navbar'
+import { SearchInputContext } from '../contexts/SearchInputContext/SearchInputContext'
 import { db } from '../firebase.config.js'
 import { SearchUserContext } from '../SearchedProfilesContext'
-import { SearchInputContext } from '../SearchInputContext'
 
-export function ProfileForeign(): ReactElement | null {
+export function ProfileForeign({
+    profileUser,
+}: {
+    profileUser: any
+}): ReactElement | null {
     // const [profileUser, SetProfileUser] = useState<UserQueryType | undefined>()
     const { id } = useParams()
     const [user, setUser] = useState<any>()
+    const [followBtn, setFollowBtn] = useState(false)
     const searchUsers = useContext(SearchUserContext)
     const input = useContext(SearchInputContext)
+    console.log(profileUser)
+
+    function removeItemOnce(arr: any, value: string): any {
+        const index = arr.indexOf(value)
+        if (index > -1) {
+            arr.splice(index, 1)
+        }
+        return arr
+    }
+
+    function initialFollowState(obj: any): void {
+        if (
+            obj &&
+            obj.followers &&
+            obj.followers.includes(String(profileUser.id))
+        ) {
+            setFollowBtn(true)
+        } else {
+            setFollowBtn(false)
+        }
+    }
+
     async function getProfile(): Promise<void> {
         const docRef = doc(db, 'users', String(id))
         const docSnap = await getDoc(docRef)
 
         if (docSnap.exists()) {
             console.log('Document data:', docSnap.data())
-            setUser(docSnap.data())
+            const obj = { ...docSnap.data() }
+            obj.id = docSnap.id
+            setUser(obj)
+            initialFollowState(obj)
         } else {
             // doc.data() will be undefined in this case
             console.log('No such document!')
         }
     }
+
+    async function follow(): Promise<void> {
+        const { followers } = user
+        const { following } = profileUser
+        if (user.followers.includes(profileUser.id)) {
+            const arr = removeItemOnce(followers, String(profileUser.id))
+            const arr1 = removeItemOnce(following, String(user?.id))
+            await updateDoc(doc(db, 'users', String(user?.id)), {
+                followers: arr,
+            })
+            await updateDoc(doc(db, 'users', String(profileUser.id)), {
+                following: arr1,
+            })
+            getProfile()
+        } else {
+            followers.push(String(profileUser.id))
+            following.push(String(user?.id))
+            await updateDoc(doc(db, 'users', String(user?.id)), {
+                followers,
+            })
+            await updateDoc(doc(db, 'users', String(profileUser.id)), {
+                following,
+            })
+            getProfile()
+        }
+    }
+
     useEffect(() => {
         searchUsers?.setSearchedUser([])
         input?.setInput('')
@@ -67,8 +125,9 @@ export function ProfileForeign(): ReactElement | null {
                                             className="btn btn-outline-dark"
                                             data-mdb-ripple-color="dark"
                                             style={{ zIndex: 1 }}
+                                            onClick={follow}
                                         >
-                                            Follow
+                                            {followBtn ? 'Unfollow' : 'Follow'}
                                         </button>
                                     </div>
                                     <div

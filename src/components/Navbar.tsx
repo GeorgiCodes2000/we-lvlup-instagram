@@ -10,10 +10,10 @@ import {
     where,
 } from 'firebase/firestore'
 import { auth, db } from '../firebase.config.js'
-import { UserContext } from '../UserContext'
 import { UserQueryType } from '../UserQueryType'
-import { SearchInputContext } from '../SearchInputContext'
 import { SearchUserContext } from '../SearchedProfilesContext'
+import { UserContext } from '../contexts/UserContext/UserContext'
+import { SearchInputContext } from '../contexts/SearchInputContext/SearchInputContext'
 
 function Navbar(): ReactElement | null {
     const user = useContext(UserContext)

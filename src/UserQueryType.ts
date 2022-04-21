@@ -7,4 +7,5 @@ export type UserQueryType = {
     following: []
     avatar: string
     aboutInfo: string
+    posts?: []
 }

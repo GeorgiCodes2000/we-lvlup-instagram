@@ -1,7 +1,7 @@
 import { ReactElement, useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { UserContext } from '../contexts/UserContext/UserContext'
 import '../styles/pages/404.scss'
-import { UserContext } from '../UserContext'
 
 export function NotFound(): ReactElement | null {
     const user = useContext(UserContext)

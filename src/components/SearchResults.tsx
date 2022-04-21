@@ -10,8 +10,12 @@ export function SearchResults(): ReactElement | null {
         <div className={styles.searchContainer}>
             {searchUsers?.searchedUser?.map((el) => {
                 return (
-                    <Link to={`/profile/${el.id}`} className={styles.link}>
-                        <div className={styles.resultDiv} key={el.id}>
+                    <Link
+                        to={`/profile/${el.id}`}
+                        className={styles.link}
+                        key={el.id}
+                    >
+                        <div className={styles.resultDiv}>
                             <img
                                 className="rounded-circle z-depth-2 img-fluid"
                                 alt="100x100"

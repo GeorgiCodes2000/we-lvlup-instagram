@@ -3,11 +3,11 @@
 import { doc, updateDoc } from 'firebase/firestore'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { ReactElement, useContext, useEffect, useRef, useState } from 'react'
+import { UserContext } from '../contexts/UserContext/UserContext'
 import { db, storage } from '../firebase.config.js'
-import { UserContext } from '../UserContext'
 import styles from './uploadStyles.module.scss'
 
-export default function Upload({
+export default function UploadAvatar({
     getProfile,
     profileUser,
 }: any): ReactElement | null {

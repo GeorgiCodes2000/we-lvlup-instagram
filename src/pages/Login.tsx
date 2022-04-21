@@ -3,8 +3,8 @@
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { ReactElement, useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { UserContext } from '../contexts/UserContext/UserContext'
 import { auth } from '../firebase.config.js'
-import { UserContext } from '../UserContext'
 
 export function Login(): ReactElement | null {
     const [loginEmail, setLoginEmail] = useState('')

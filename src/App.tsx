@@ -12,14 +12,15 @@ import { Register } from './pages/Register'
 import { Login } from './pages/Login'
 import { Home } from './pages/Home'
 import './App.scss'
-import { UserContext } from './UserContext'
 import { NotFound } from './pages/NotFound'
 import { Profile } from './pages/Profile'
 import { UserQueryType } from './UserQueryType.js'
 import { db } from './firebase.config.js'
-import { SerachInputProvider } from './SearchInputProvider'
 import { SearchUserProvider } from './SearchedProfilesProvider'
 import { ProfileForeign } from './pages/PorfileForeign'
+import { UserContext } from './contexts/UserContext/UserContext'
+import { SerachInputProvider } from './contexts/SearchInputContext/SearchInputProvider'
+import Upload from './pages/Upload'
 
 function App(): ReactElement | null {
     const userContext = useContext(UserContext)
@@ -61,6 +62,18 @@ function App(): ReactElement | null {
                         {userContext?.user.user ? (
                             <Route path="/" element={<Home />} />
                         ) : null}
+
+                        {userContext?.user.user ? (
+                            <Route
+                                path="/upload"
+                                element={
+                                    <Upload
+                                        profileUser={profileUser}
+                                        getProfile={getProfile}
+                                    />
+                                }
+                            />
+                        ) : null}
                         {userContext?.user.user ? (
                             <Route
                                 path="/profile"
@@ -75,7 +88,9 @@ function App(): ReactElement | null {
                         {userContext?.user.user ? (
                             <Route
                                 path="/profile/:id"
-                                element={<ProfileForeign />}
+                                element={
+                                    <ProfileForeign profileUser={profileUser} />
+                                }
                             />
                         ) : null}
                         {!userContext?.user.user ? (

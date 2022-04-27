@@ -3,7 +3,7 @@ import { ReactElement, useContext } from 'react'
 import Navbar from '../components/Navbar'
 import { SearchResults } from '../components/SearchResults'
 import { UserContext } from '../contexts/UserContext/UserContext'
-import { SearchUserContext } from '../SearchedProfilesContext'
+import { SearchUserContext } from '../contexts/SearchedProfileContext/SearchedProfilesContext'
 
 export function Home(): ReactElement | null {
     // const navigate = useNavigate()

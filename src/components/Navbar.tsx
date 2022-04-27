@@ -11,7 +11,7 @@ import {
 } from 'firebase/firestore'
 import { auth, db } from '../firebase.config.js'
 import { UserQueryType } from '../UserQueryType'
-import { SearchUserContext } from '../SearchedProfilesContext'
+import { SearchUserContext } from '../contexts/SearchedProfileContext/SearchedProfilesContext'
 import { UserContext } from '../contexts/UserContext/UserContext'
 import { SearchInputContext } from '../contexts/SearchInputContext/SearchInputContext'
 

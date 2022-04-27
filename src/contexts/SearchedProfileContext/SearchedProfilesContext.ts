@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { createContext } from 'react'
-import { UserQueryType } from './UserQueryType'
+import { UserQueryType } from '../../UserQueryType'
 
 export type SearchUserContextType = {
     searchedUser: UserQueryType[] | undefined

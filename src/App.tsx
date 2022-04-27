@@ -16,11 +16,12 @@ import { NotFound } from './pages/NotFound'
 import { Profile } from './pages/Profile'
 import { UserQueryType } from './UserQueryType.js'
 import { db } from './firebase.config.js'
-import { SearchUserProvider } from './SearchedProfilesProvider'
+import { SearchUserProvider } from './contexts/SearchedProfileContext/SearchedProfilesProvider'
 import { ProfileForeign } from './pages/PorfileForeign'
 import { UserContext } from './contexts/UserContext/UserContext'
 import { SerachInputProvider } from './contexts/SearchInputContext/SearchInputProvider'
 import Upload from './pages/Upload'
+import { PostPreview } from './pages/PostPreview'
 
 function App(): ReactElement | null {
     const userContext = useContext(UserContext)
@@ -73,6 +74,9 @@ function App(): ReactElement | null {
                                     />
                                 }
                             />
+                        ) : null}
+                        {userContext?.user.user ? (
+                            <Route path="/preview" element={<PostPreview />} />
                         ) : null}
                         {userContext?.user.user ? (
                             <Route

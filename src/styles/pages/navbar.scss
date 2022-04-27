@@ -67,7 +67,12 @@ body {
     justify-content: space-between;
   }
   .navigation-search-container {
-    display: none;
+    // display: none;
+    margin-left: 15px;
+    input{
+      
+      width: 170px;
+    }
   }
   .navigation-icons {
     display: flex;

@@ -1,6 +1,6 @@
 import { ReactElement, useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { SearchUserContext } from '../SearchedProfilesContext'
+import { SearchUserContext } from '../contexts/SearchedProfileContext/SearchedProfilesContext'
 import styles from './SearchResultsStyles.module.scss'
 
 export function SearchResults(): ReactElement | null {

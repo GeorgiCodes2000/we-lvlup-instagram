@@ -1,12 +1,15 @@
+/* eslint-disable dot-notation */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { ReactElement, useContext, useEffect, useState } from 'react'
 import { doc, updateDoc } from 'firebase/firestore'
+import { Link } from 'react-router-dom'
 import { db } from '../firebase.config.js'
 import { UserQueryType } from '../UserQueryType.js'
 import Navbar from '../components/Navbar'
-import { SearchUserContext } from '../SearchedProfilesContext'
+import { SearchUserContext } from '../contexts/SearchedProfileContext/SearchedProfilesContext'
 import { SearchInputContext } from '../contexts/SearchInputContext/SearchInputContext'
 import UploadAvatar from '../components/UploadAvatar'
+import style from '../styles/pages/Profile.module.scss'
 
 export function Profile({
     profileUser,
@@ -177,6 +180,7 @@ export function Profile({
                                             </p>
                                         </div>
                                     </div>
+
                                     <div className="d-flex justify-content-between align-items-center mb-4">
                                         <p className="lead fw-normal mb-0">
                                             Recent photos
@@ -187,37 +191,21 @@ export function Profile({
                                             </a>
                                         </p>
                                     </div>
-                                    <div className="row g-2">
-                                        <div className="col mb-2">
-                                            <img
-                                                src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
-                                                alt=" 1"
-                                                className="w-100 rounded-3"
-                                            />
-                                        </div>
-                                        <div className="col mb-2">
-                                            <img
-                                                src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
-                                                alt=" 1"
-                                                className="w-100 rounded-3"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row g-2">
-                                        <div className="col">
-                                            <img
-                                                src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
-                                                alt=" 1"
-                                                className="w-100 rounded-3"
-                                            />
-                                        </div>
-                                        <div className="col">
-                                            <img
-                                                src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
-                                                alt=" 1"
-                                                className="w-100 rounded-3"
-                                            />
-                                        </div>
+
+                                    <div className={style.container}>
+                                        {profileUser?.posts?.map((el) => {
+                                            return (
+                                                <Link to="/home">
+                                                    <div className={style.item}>
+                                                        <img
+                                                            src={el['img']}
+                                                            alt=" 1"
+                                                            className="w-100 rounded-3"
+                                                        />
+                                                    </div>
+                                                </Link>
+                                            )
+                                        })}
                                     </div>
                                 </div>
                             </div>

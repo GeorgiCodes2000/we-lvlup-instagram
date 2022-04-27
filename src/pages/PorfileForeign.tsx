@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import { SearchInputContext } from '../contexts/SearchInputContext/SearchInputContext'
 import { db } from '../firebase.config.js'
-import { SearchUserContext } from '../SearchedProfilesContext'
+import { SearchUserContext } from '../contexts/SearchedProfileContext/SearchedProfilesContext'
 
 export function ProfileForeign({
     profileUser,

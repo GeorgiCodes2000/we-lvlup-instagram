@@ -10,6 +10,8 @@ import { SearchUserContext } from '../contexts/SearchedProfileContext/SearchedPr
 import { SearchInputContext } from '../contexts/SearchInputContext/SearchInputContext'
 import UploadAvatar from '../components/UploadAvatar'
 import style from '../styles/pages/Profile.module.scss'
+import { getPosts } from '../utilFunctions/currentLoggedUtils'
+import { PostQueryType } from '../PostQueryType.js'
 
 export function Profile({
     profileUser,
@@ -20,6 +22,7 @@ export function Profile({
 }): ReactElement | null {
     // const [profileUser, SetProfileUser] = useState<UserQueryType | undefined>()
     const [edit, setEdit] = useState(false)
+    const [posts, setPosts] = useState<PostQueryType[]>([])
     const [bioText, setBioText] = useState<string | undefined>(
         profileUser?.aboutInfo
     )
@@ -27,6 +30,10 @@ export function Profile({
     const input = useContext(SearchInputContext)
 
     useEffect(() => {
+        if (profileUser && profileUser?.id) {
+            const arr = getPosts(profileUser?.id)
+            arr.then((arr1) => setPosts(arr1))
+        }
         searchUsers?.setSearchedUser([])
         input?.setInput('')
     }, [])
@@ -193,9 +200,12 @@ export function Profile({
                                     </div>
 
                                     <div className={style.container}>
-                                        {profileUser?.posts?.map((el) => {
+                                        {posts?.map((el) => {
                                             return (
-                                                <Link to="/home">
+                                                <Link
+                                                    to={`/post/${el['id']}`}
+                                                    key={el.id}
+                                                >
                                                     <div className={style.item}>
                                                         <img
                                                             src={el['img']}

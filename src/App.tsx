@@ -54,59 +54,67 @@ function App(): ReactElement | null {
         getProfile()
     }, [userContext])
 
-    return (
-        <SerachInputProvider>
-            <SearchUserProvider>
-                <Router>
-                    <Routes>
-                        <Route path="*" element={<NotFound />} />
-                        {userContext?.user.user ? (
-                            <Route path="/" element={<Home />} />
-                        ) : null}
+    if (profileUser && profileUser.id) {
+        return (
+            <SerachInputProvider>
+                <SearchUserProvider>
+                    <Router>
+                        <Routes>
+                            <Route path="*" element={<NotFound />} />
+                            {userContext?.user.user ? (
+                                <Route path="/" element={<Home />} />
+                            ) : null}
 
-                        {userContext?.user.user ? (
-                            <Route
-                                path="/upload"
-                                element={
-                                    <Upload
-                                        profileUser={profileUser}
-                                        getProfile={getProfile}
-                                    />
-                                }
-                            />
-                        ) : null}
-                        {userContext?.user.user ? (
-                            <Route path="/preview" element={<PostPreview />} />
-                        ) : null}
-                        {userContext?.user.user ? (
-                            <Route
-                                path="/profile"
-                                element={
-                                    <Profile
-                                        profileUser={profileUser}
-                                        getProfile={getProfile}
-                                    />
-                                }
-                            />
-                        ) : null}
-                        {userContext?.user.user ? (
-                            <Route
-                                path="/profile/:id"
-                                element={
-                                    <ProfileForeign profileUser={profileUser} />
-                                }
-                            />
-                        ) : null}
-                        {!userContext?.user.user ? (
-                            <Route path="/register" element={<Register />} />
-                        ) : null}
-                        {!userContext?.user.user ? (
-                            <Route path="/login" element={<Login />} />
-                        ) : null}
-                    </Routes>
-                </Router>
-            </SearchUserProvider>
-        </SerachInputProvider>
-    )
+                            {userContext?.user.user ? (
+                                <Route
+                                    path="/upload"
+                                    element={
+                                        <Upload profileUser={profileUser} />
+                                    }
+                                />
+                            ) : null}
+                            {userContext?.user.user ? (
+                                <Route
+                                    path="/post/:id"
+                                    element={<PostPreview />}
+                                />
+                            ) : null}
+                            {userContext?.user.user ? (
+                                <Route
+                                    path="/profile"
+                                    element={
+                                        <Profile
+                                            profileUser={profileUser}
+                                            getProfile={getProfile}
+                                        />
+                                    }
+                                />
+                            ) : null}
+                            {userContext?.user.user ? (
+                                <Route
+                                    path="/profile/:id"
+                                    element={
+                                        <ProfileForeign
+                                            profileUser={profileUser}
+                                        />
+                                    }
+                                />
+                            ) : null}
+                            {!userContext?.user.user ? (
+                                <Route
+                                    path="/register"
+                                    element={<Register />}
+                                />
+                            ) : null}
+                            {!userContext?.user.user ? (
+                                <Route path="/login" element={<Login />} />
+                            ) : null}
+                        </Routes>
+                    </Router>
+                </SearchUserProvider>
+            </SerachInputProvider>
+        )
+    }
+    return null
 }
 export default App

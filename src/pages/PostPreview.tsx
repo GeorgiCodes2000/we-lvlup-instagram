@@ -1,8 +1,32 @@
-import { ReactElement } from 'react'
+import { doc, getDoc } from 'firebase/firestore'
+import { ReactElement, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import Navbar from '../components/Navbar'
+import { db } from '../firebase.config.js'
 import '../styles/pages/PostPreview.scss'
 
 export function PostPreview(): ReactElement | null {
+    const { id } = useParams()
+    const [post, setPost] = useState<any>()
+
+    async function getPost(): Promise<void> {
+        const docRef = doc(db, 'posts', String(id))
+        const docSnap = await getDoc(docRef)
+
+        if (docSnap.exists()) {
+            const obj = { ...docSnap.data() }
+            obj.id = docSnap.id
+            setPost(obj)
+        } else {
+            // doc.data() will be undefined in this case
+            console.log('No such document!')
+        }
+    }
+
+    useEffect(() => {
+        getPost()
+    }, [])
+
     return (
         <>
             <Navbar />
@@ -14,7 +38,7 @@ export function PostPreview(): ReactElement | null {
                                 <div className="d-flex flex-row align-items-center">
                                     {' '}
                                     <img
-                                        src="https://i.imgur.com/UXdKE3o.jpg"
+                                        src={post?.img}
                                         width="50"
                                         className="rounded-circle"
                                         alt="1"
@@ -28,7 +52,7 @@ export function PostPreview(): ReactElement | null {
                                 </div>
                             </div>{' '}
                             <img
-                                src="https://i.imgur.com/xhzhaGA.jpg"
+                                src={post?.img}
                                 className="img-fluid"
                                 alt="1"
                             />
@@ -56,7 +80,7 @@ export function PostPreview(): ReactElement | null {
                                     <div className="d-flex flex-row mb-2">
                                         {' '}
                                         <img
-                                            src="https://i.imgur.com/9AZ2QX1.jpg"
+                                            src={post?.img}
                                             width="40"
                                             className="rounded-image"
                                             alt="1"

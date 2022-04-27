@@ -1,12 +1,16 @@
+/* eslint-disable dot-notation */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { ReactElement, useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import { SearchInputContext } from '../contexts/SearchInputContext/SearchInputContext'
 import { db } from '../firebase.config.js'
 import { SearchUserContext } from '../contexts/SearchedProfileContext/SearchedProfilesContext'
+import style from '../styles/pages/Profile.module.scss'
+import { getPosts } from '../utilFunctions/currentLoggedUtils'
+import { PostQueryType } from '../PostQueryType'
 
 export function ProfileForeign({
     profileUser,
@@ -19,7 +23,7 @@ export function ProfileForeign({
     const [followBtn, setFollowBtn] = useState(false)
     const searchUsers = useContext(SearchUserContext)
     const input = useContext(SearchInputContext)
-    console.log(profileUser)
+    const [posts, setPosts] = useState<PostQueryType[]>([])
 
     function removeItemOnce(arr: any, value: string): any {
         const index = arr.indexOf(value)
@@ -28,6 +32,7 @@ export function ProfileForeign({
         }
         return arr
     }
+    const navigate = useNavigate()
 
     function initialFollowState(obj: any): void {
         if (
@@ -51,6 +56,9 @@ export function ProfileForeign({
             obj.id = docSnap.id
             setUser(obj)
             initialFollowState(obj)
+            if (profileUser?.id === obj?.id) {
+                navigate('/profile')
+            }
         } else {
             // doc.data() will be undefined in this case
             console.log('No such document!')
@@ -84,6 +92,10 @@ export function ProfileForeign({
     }
 
     useEffect(() => {
+        if (user && user?.id) {
+            const arr = getPosts(profileUser?.id)
+            arr.then((arr1) => setPosts(arr1))
+        }
         searchUsers?.setSearchedUser([])
         input?.setInput('')
         getProfile()
@@ -195,37 +207,21 @@ export function ProfileForeign({
                                             </a>
                                         </p>
                                     </div>
-                                    <div className="row g-2">
-                                        <div className="col mb-2">
-                                            <img
-                                                src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
-                                                alt=" 1"
-                                                className="w-100 rounded-3"
-                                            />
-                                        </div>
-                                        <div className="col mb-2">
-                                            <img
-                                                src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
-                                                alt=" 1"
-                                                className="w-100 rounded-3"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row g-2">
-                                        <div className="col">
-                                            <img
-                                                src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
-                                                alt=" 1"
-                                                className="w-100 rounded-3"
-                                            />
-                                        </div>
-                                        <div className="col">
-                                            <img
-                                                src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
-                                                alt=" 1"
-                                                className="w-100 rounded-3"
-                                            />
-                                        </div>
+
+                                    <div className={style.container}>
+                                        {posts?.map((el) => {
+                                            return (
+                                                <Link to="/home" key={el.id}>
+                                                    <div className={style.item}>
+                                                        <img
+                                                            src={el['img']}
+                                                            alt=" 1"
+                                                            className="w-100 rounded-3"
+                                                        />
+                                                    </div>
+                                                </Link>
+                                            )
+                                        })}
                                     </div>
                                 </div>
                             </div>

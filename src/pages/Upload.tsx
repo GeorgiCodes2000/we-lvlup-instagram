@@ -1,23 +1,22 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { doc, updateDoc } from 'firebase/firestore'
+import { addDoc, collection } from 'firebase/firestore'
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { ReactElement, useContext, useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import Navbar from '../components/Navbar'
 import { UserContext } from '../contexts/UserContext/UserContext'
 import { db, storage } from '../firebase.config.js'
 import styles from '../styles/Upload.module.scss'
 
-export default function Upload({
-    getProfile,
-    profileUser,
-}: any): ReactElement | null {
+export default function Upload({ profileUser }: any): ReactElement | null {
     const userContext = useContext(UserContext)
     const fileInputRef = useRef() as React.MutableRefObject<HTMLInputElement>
     const [image, setImage] = useState<File>()
     const [preview, setPreview] = useState<string | null>()
     const [description, setDescription] = useState('')
+    const navigate = useNavigate()
 
     const uploadToDb = (file: File): void => {
         const storageRef = ref(
@@ -27,18 +26,19 @@ export default function Upload({
         const uploadTask = uploadBytesResumable(storageRef, file)
         uploadTask.on('state_changed', () => {
             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                const posts = profileUser?.posts
-                posts.push({
-                    id: uuidv4(),
-                    img: url,
-                    description,
-                })
-                ;(async () => {
-                    await updateDoc(doc(db, 'users', String(profileUser?.id)), {
-                        posts,
+                const posts = collection(db, 'posts')
+
+                async function savePost(): Promise<void> {
+                    await addDoc(posts, {
+                        img: url,
+                        uploader: profileUser?.id,
+                        description,
+                        likes: [],
+                        comments: [],
                     })
-                    getProfile()
-                })()
+                }
+                savePost()
+                navigate('/profile')
             })
         })
     }

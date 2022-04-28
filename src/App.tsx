@@ -22,6 +22,7 @@ import { UserContext } from './contexts/UserContext/UserContext'
 import { SerachInputProvider } from './contexts/SearchInputContext/SearchInputProvider'
 import Upload from './pages/Upload'
 import { PostPreview } from './pages/PostPreview'
+import { Loading } from './components/Loading'
 
 function App(): ReactElement | null {
     const userContext = useContext(UserContext)
@@ -76,7 +77,11 @@ function App(): ReactElement | null {
                             {userContext?.user.user ? (
                                 <Route
                                     path="/post/:id"
-                                    element={<PostPreview />}
+                                    element={
+                                        <PostPreview
+                                            profileUser={profileUser}
+                                        />
+                                    }
                                 />
                             ) : null}
                             {userContext?.user.user ? (
@@ -115,6 +120,6 @@ function App(): ReactElement | null {
             </SerachInputProvider>
         )
     }
-    return null
+    return <Loading />
 }
 export default App

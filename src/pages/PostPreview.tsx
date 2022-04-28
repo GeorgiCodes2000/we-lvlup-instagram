@@ -1,13 +1,22 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { doc, getDoc } from 'firebase/firestore'
 import { ReactElement, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import { db } from '../firebase.config.js'
 import '../styles/pages/PostPreview.scss'
+import { UserQueryType } from '../UserQueryType'
+import { removeItemAll, updateLikes } from '../utilFunctions/currentLoggedUtils'
 
-export function PostPreview(): ReactElement | null {
+export function PostPreview({
+    profileUser,
+}: {
+    profileUser: UserQueryType | undefined
+}): ReactElement | null {
     const { id } = useParams()
     const [post, setPost] = useState<any>()
+    const [postOwner, setPostOwner] = useState<any>()
 
     async function getPost(): Promise<void> {
         const docRef = doc(db, 'posts', String(id))
@@ -17,9 +26,36 @@ export function PostPreview(): ReactElement | null {
             const obj = { ...docSnap.data() }
             obj.id = docSnap.id
             setPost(obj)
+            const docRef1 = doc(db, 'users', String(obj.uploader))
+            const docSnap1 = await getDoc(docRef1)
+            if (docSnap1.exists()) {
+                const obj1 = { ...docSnap1.data() }
+                obj1.id = docSnap1.id
+                setPostOwner(obj1)
+            } else {
+                console.log('error')
+            }
         } else {
             // doc.data() will be undefined in this case
             console.log('No such document!')
+        }
+    }
+
+    async function like(): Promise<void> {
+        if (post?.likes.includes(profileUser?.id)) {
+            const arr = removeItemAll(post?.likes, profileUser?.id)
+            const newPost = { ...post }
+            newPost.likes = arr
+            setPost(newPost)
+            updateLikes(post?.id, arr)
+            alert('No longer like')
+        } else {
+            const arr = post?.likes
+            arr.push(profileUser?.id)
+            const newPost = { ...post }
+            newPost.likes = arr
+            setPost(newPost)
+            updateLikes(post?.id, arr)
         }
     }
 
@@ -37,16 +73,18 @@ export function PostPreview(): ReactElement | null {
                             <div className="d-flex justify-content-between p-2 px-3">
                                 <div className="d-flex flex-row align-items-center">
                                     {' '}
-                                    <img
-                                        src={post?.img}
-                                        width="50"
-                                        className="rounded-circle"
-                                        alt="1"
-                                    />
+                                    <Link to={`/profile/${postOwner?.id}`}>
+                                        <img
+                                            src={postOwner?.avatar}
+                                            width="50"
+                                            className="rounded-circle"
+                                            alt="1"
+                                        />
+                                    </Link>
                                     <div className="d-flex flex-column ml-2">
                                         {' '}
                                         <span className="font-weight-bold">
-                                            Jeanette Sun
+                                            {postOwner?.fullNameInp}
                                         </span>{' '}
                                     </div>
                                 </div>
@@ -66,7 +104,19 @@ export function PostPreview(): ReactElement | null {
                                 <div className="d-flex justify-content-between align-items-center">
                                     <div className="d-flex flex-row icons d-flex align-items-center">
                                         {' '}
-                                        <i className="fa fa-heart" />{' '}
+                                        {post?.likes.includes(
+                                            profileUser?.id
+                                        ) ? (
+                                            <i
+                                                className="fa fa-heart"
+                                                onClick={like}
+                                            />
+                                        ) : (
+                                            <i
+                                                className="fa fa-heart-o"
+                                                onClick={like}
+                                            />
+                                        )}
                                         <i className="fa fa-smile-o ml-2" />{' '}
                                     </div>
                                     <div className="d-flex flex-row muted-color">

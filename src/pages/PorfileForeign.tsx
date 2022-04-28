@@ -56,6 +56,8 @@ export function ProfileForeign({
             obj.id = docSnap.id
             setUser(obj)
             initialFollowState(obj)
+            const arr = getPosts(obj.id)
+            arr.then((arr1) => setPosts(arr1))
             if (profileUser?.id === obj?.id) {
                 navigate('/profile')
             }
@@ -92,10 +94,6 @@ export function ProfileForeign({
     }
 
     useEffect(() => {
-        if (user && user?.id) {
-            const arr = getPosts(profileUser?.id)
-            arr.then((arr1) => setPosts(arr1))
-        }
         searchUsers?.setSearchedUser([])
         input?.setInput('')
         getProfile()
@@ -211,7 +209,10 @@ export function ProfileForeign({
                                     <div className={style.container}>
                                         {posts?.map((el) => {
                                             return (
-                                                <Link to="/home" key={el.id}>
+                                                <Link
+                                                    to={`/post/${el['id']}`}
+                                                    key={el.id}
+                                                >
                                                     <div className={style.item}>
                                                         <img
                                                             src={el['img']}

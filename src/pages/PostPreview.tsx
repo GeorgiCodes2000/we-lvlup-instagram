@@ -107,15 +107,25 @@ export function PostPreview({
                                         {post?.likes.includes(
                                             profileUser?.id
                                         ) ? (
-                                            <i
-                                                className="fa fa-heart"
-                                                onClick={like}
-                                            />
+                                            <>
+                                                <i
+                                                    className="fa fa-heart"
+                                                    onClick={like}
+                                                />
+                                                <span>
+                                                    {post?.likes.length}
+                                                </span>
+                                            </>
                                         ) : (
-                                            <i
-                                                className="fa fa-heart-o"
-                                                onClick={like}
-                                            />
+                                            <>
+                                                <i
+                                                    className="fa fa-heart-o"
+                                                    onClick={like}
+                                                />
+                                                <span>
+                                                    {post?.likes.length}
+                                                </span>
+                                            </>
                                         )}
                                         <i className="fa fa-smile-o ml-2" />{' '}
                                     </div>

@@ -153,7 +153,9 @@ export function ProfileForeign({
                                 >
                                     <div className="d-flex justify-content-end text-center py-1">
                                         <div>
-                                            <p className="mb-1 h5">253</p>
+                                            <p className="mb-1 h5">
+                                                {posts.length}
+                                            </p>
                                             <p className="small text-muted mb-0">
                                                 Photos
                                             </p>

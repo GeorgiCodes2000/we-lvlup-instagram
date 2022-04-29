@@ -1,6 +1,12 @@
+/* eslint-disable no-unused-vars */
 import { ReactElement } from 'react'
 
-export function ModalInfo(): ReactElement | null {
+export function ModalInfo({
+    followers,
+}: {
+    followers: any
+}): ReactElement | null {
+    console.log(followers)
     return (
         <div
             className="modal fade"
@@ -23,18 +29,7 @@ export function ModalInfo(): ReactElement | null {
                         />
                     </div>
                     <div className="modal-body">...</div>
-                    <div className="modal-footer">
-                        <button
-                            type="button"
-                            className="btn btn-secondary"
-                            data-bs-dismiss="modal"
-                        >
-                            Close
-                        </button>
-                        <button type="button" className="btn btn-primary">
-                            Save changes
-                        </button>
-                    </div>
+                    <div className="modal-footer" />
                 </div>
             </div>
         </div>

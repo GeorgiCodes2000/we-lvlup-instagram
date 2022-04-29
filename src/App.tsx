@@ -22,7 +22,6 @@ import { UserContext } from './contexts/UserContext/UserContext'
 import { SerachInputProvider } from './contexts/SearchInputContext/SearchInputProvider'
 import Upload from './pages/Upload'
 import { PostPreview } from './pages/PostPreview'
-import { Loading } from './components/Loading'
 
 function App(): ReactElement | null {
     const userContext = useContext(UserContext)
@@ -31,31 +30,33 @@ function App(): ReactElement | null {
     const [profileUser, SetProfileUser] = useState<UserQueryType | undefined>()
 
     async function getProfile(): Promise<void> {
-        const usersRef = collection(
-            db,
-            'users'
-        ) as CollectionReference<UserQueryType>
-        const q = await query(
-            usersRef,
-            where('registerEmail', '==', userContext?.user?.user?.email)
-        )
+        if (userContext?.user?.user?.email) {
+            const usersRef = collection(
+                db,
+                'users'
+            ) as CollectionReference<UserQueryType>
+            const q = await query(
+                usersRef,
+                where('registerEmail', '==', userContext?.user?.user?.email)
+            )
 
-        const querySnapshot = await getDocs(q)
+            const querySnapshot = await getDocs(q)
 
-        querySnapshot.forEach((doC) => {
-            if (doC.data()) {
-                const obj = { ...doC.data() }
-                obj.id = doC.id
-                SetProfileUser(obj)
-            }
-        })
+            querySnapshot.forEach((doC) => {
+                if (doC.data()) {
+                    const obj = { ...doC.data() }
+                    obj.id = doC.id
+                    SetProfileUser(obj)
+                }
+            })
+        }
     }
 
     useEffect(() => {
         getProfile()
     }, [userContext])
 
-    if (profileUser && profileUser.id) {
+    if (userContext?.user.user.email && profileUser?.avatar) {
         return (
             <SerachInputProvider>
                 <SearchUserProvider>
@@ -120,6 +121,22 @@ function App(): ReactElement | null {
             </SerachInputProvider>
         )
     }
-    return <Loading />
+    return (
+        <Router>
+            <Routes>
+                <Route path="*" element={<NotFound />} />
+                {userContext?.user.user ? (
+                    <Route path="/" element={<Home />} />
+                ) : null}
+
+                {!userContext?.user.user ? (
+                    <Route path="/register" element={<Register />} />
+                ) : null}
+                {!userContext?.user.user ? (
+                    <Route path="/login" element={<Login />} />
+                ) : null}
+            </Routes>
+        </Router>
+    )
 }
 export default App

@@ -13,6 +13,7 @@ import style from '../styles/pages/Profile.module.scss'
 import { getPosts } from '../utilFunctions/currentLoggedUtils'
 import { PostQueryType } from '../PostQueryType.js'
 import { Loading } from '../components/Loading'
+import { ModalInfo } from '../components/ModalInfo'
 
 export function Profile({
     profileUser,
@@ -23,26 +24,29 @@ export function Profile({
 }): ReactElement | null {
     // const [profileUser, SetProfileUser] = useState<UserQueryType | undefined>()
     const [edit, setEdit] = useState(false)
-    const [posts, setPosts] = useState<PostQueryType[]>([])
-    const [bioText, setBioText] = useState<string | undefined>(
-        profileUser?.aboutInfo
-    )
+    const [posts, setPosts] = useState<PostQueryType[] | undefined>()
+    const [bioText, setBioText] = useState<string | undefined>()
     const searchUsers = useContext(SearchUserContext)
     const input = useContext(SearchInputContext)
 
     useEffect(() => {
         if (profileUser && profileUser?.id) {
+            setBioText(profileUser?.aboutInfo)
             const arr = getPosts(profileUser?.id)
-            arr.then((arr1) => setPosts(arr1))
+            arr.then((arr1) => {
+                setPosts(arr1)
+            })
         }
         searchUsers?.setSearchedUser([])
         input?.setInput('')
     }, [])
 
     if (profileUser) {
+        console.log(posts)
         return (
             <>
                 <Navbar />
+
                 <section className="h-100 gradient-custom-2">
                     <div className="container py-5 h-100">
                         <div className="row d-flex justify-content-center align-items-center h-100">
@@ -96,12 +100,19 @@ export function Profile({
                                     >
                                         <div className="d-flex justify-content-end text-center py-1">
                                             <div>
-                                                <p className="mb-1 h5">253</p>
+                                                <p className="mb-1 h5">
+                                                    {posts?.length}
+                                                </p>
                                                 <p className="small text-muted mb-0">
                                                     Photos
                                                 </p>
                                             </div>
                                             <div className="px-3">
+                                                <ModalInfo
+                                                    followers={
+                                                        profileUser.followers
+                                                    }
+                                                />
                                                 <p className="mb-1 h5">
                                                     {
                                                         profileUser?.followers
@@ -113,7 +124,11 @@ export function Profile({
                                                 </p>
                                             </div>
                                             <div>
-                                                <p className="mb-1 h5">
+                                                <p
+                                                    className="mb-1 h5"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#exampleModal"
+                                                >
                                                     {
                                                         profileUser?.following
                                                             ?.length

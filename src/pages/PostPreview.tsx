@@ -166,8 +166,9 @@ export function PostPreview({
                                     </div>
                                     <div className="d-flex flex-row muted-color">
                                         {' '}
-                                        <span>2 comments</span>{' '}
-                                        <span className="ml-2">Share</span>{' '}
+                                        <span>
+                                            {post?.comments.length} comments
+                                        </span>{' '}
                                     </div>
                                 </div>
                                 <hr />

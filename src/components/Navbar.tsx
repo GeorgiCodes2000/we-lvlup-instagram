@@ -96,8 +96,8 @@ function Navbar(): ReactElement | null {
                 </div>
             </div>
             <div className="navigation-icons">
-                <Link to="/" target="_blank" className="navigation-link">
-                    <i className="far fa-compass" />
+                <Link to="/upload" className="navigation-link">
+                    <i className="fas fa-plus" />
                 </Link>
                 <Link to="/" className="navigation-link notifica">
                     <i className="far fa-heart" />

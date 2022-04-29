@@ -2,6 +2,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { doc, getDoc } from 'firebase/firestore'
 import { v4 as uuidv4 } from 'uuid'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { ReactElement, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Navbar from '../components/Navbar'
@@ -68,21 +70,28 @@ export function PostPreview({
         setInpValue(event.currentTarget.value)
     }
 
+    const notify = (): any =>
+        toast.error('Comments should be atleast 3 symbols!')
+
     async function comment(): Promise<void> {
         const arr = post?.comments
-        const commentObj = {
-            id: uuidv4(),
-            comment: inpValue,
-            commentatorId: profileUser?.id,
-            commentatorImg: profileUser?.avatar,
-            commentatorName: profileUser?.fullNameInp,
+        if (inpValue.length > 2) {
+            const commentObj = {
+                id: uuidv4(),
+                comment: inpValue,
+                commentatorId: profileUser?.id,
+                commentatorImg: profileUser?.avatar,
+                commentatorName: profileUser?.fullNameInp,
+            }
+            arr.push(commentObj)
+            const newPost = { ...post }
+            newPost.comments = arr
+            setPost(newPost)
+            await updateComments(post?.id, arr)
+            setInpValue('')
+        } else {
+            notify()
         }
-        arr.push(commentObj)
-        const newPost = { ...post }
-        newPost.comments = arr
-        setPost(newPost)
-        await updateComments(post?.id, arr)
-        setInpValue('')
     }
 
     useEffect(() => {
@@ -92,6 +101,8 @@ export function PostPreview({
     return (
         <>
             <Navbar />
+            <ToastContainer position="top-center" />
+
             <div className="container mt-5 mb-5">
                 <div className="row d-flex align-items-center justify-content-center">
                     <div className="col-md-6">
@@ -168,12 +179,17 @@ export function PostPreview({
                                                 key={el.id}
                                             >
                                                 {' '}
-                                                <img
-                                                    src={el?.commentatorImg}
-                                                    width="40"
-                                                    className="rounded-image"
-                                                    alt="1"
-                                                />
+                                                <Link
+                                                    to={`/profile/${el.commentatorId}`}
+                                                    key={el.id}
+                                                >
+                                                    <img
+                                                        src={el?.commentatorImg}
+                                                        width="40"
+                                                        className="rounded-image"
+                                                        alt="1"
+                                                    />
+                                                </Link>
                                                 <div className="d-flex flex-column ms-2">
                                                     {' '}
                                                     <span className="name">
@@ -182,13 +198,13 @@ export function PostPreview({
                                                     <small className="comment-text">
                                                         {el?.comment}
                                                     </small>
-                                                    <div className="d-flex flex-row align-items-center status">
+                                                    {/* <div className="d-flex flex-row align-items-center status">
                                                         {' '}
                                                         <small>Like</small>{' '}
                                                         <small>Reply</small>{' '}
                                                         <small>Translate</small>{' '}
                                                         <small>18 mins</small>{' '}
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                             </div>
                                         )

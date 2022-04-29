@@ -1,11 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
 
 .card {
-    border: none
+    border: none;
 }
 
 .ellipsis {
-    color: #a09c9c
+    color: #a09c9c;
 }
 
 hr {
@@ -16,25 +16,27 @@ hr {
 
 .muted-color {
     color: #a09c9c;
-    font-size: 13px
+    font-size: 13px;
 }
 
 .ellipsis i {
     margin-top: 3px;
-    cursor: pointer
+    cursor: pointer;
 }
 
 .icons i {
-    font-size: 25px
+    cursor: pointer;
+    font-size: 25px;
 }
 
 .icons .fa-heart {
-    color: red
+    
+    color: red;
 }
 
 .icons .fa-smile-o {
     color: yellow;
-    font-size: 29px
+    font-size: 29px;
 }
 
 .rounded-image {
@@ -43,15 +45,15 @@ hr {
     justify-content: center;
     align-items: center;
     height: 50px;
-    width: 50px
+    width: 50px;
 }
 
 .name {
-    font-weight: 600
+    font-weight: 600;
 }
 
 .comment-text {
-    font-size: 12px
+    font-size: 12px;
 }
 
 .status small {
@@ -60,18 +62,18 @@ hr {
 }
 
 .form-control {
-    border-radius: 26px
+    border-radius: 26px;
 }
 
 .comment-input {
-    position: relative
+    position: relative;
 }
 
 .fonts {
     position: absolute;
     right: 13px;
     top: 8px;
-    color: #a09c9c
+    color: #a09c9c;
 }
 
 .form-control:focus {
@@ -79,5 +81,5 @@ hr {
     background-color: #fff;
     border-color: #8bbafe;
     outline: 0;
-    box-shadow: none
+    box-shadow: none;
 }

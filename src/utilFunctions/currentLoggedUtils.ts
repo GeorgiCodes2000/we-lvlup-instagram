@@ -49,6 +49,13 @@ async function updateLikes(id: string, likes: any): Promise<void> {
     })
 }
 
+async function updateComments(id: string, comments: any): Promise<void> {
+    await updateDoc(doc(db, 'posts', String(id)), {
+        comments,
+    })
+}
+
 export { getPosts }
 export { removeItemAll }
 export { updateLikes }
+export { updateComments }

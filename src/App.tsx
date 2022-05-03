@@ -22,6 +22,7 @@ import { UserContext } from './contexts/UserContext/UserContext'
 import { SerachInputProvider } from './contexts/SearchInputContext/SearchInputProvider'
 import Upload from './pages/Upload'
 import { PostPreview } from './pages/PostPreview'
+import { Loading } from './components/Loading'
 
 function App(): ReactElement | null {
     const userContext = useContext(UserContext)
@@ -56,7 +57,7 @@ function App(): ReactElement | null {
         getProfile()
     }, [userContext])
 
-    if (userContext?.user.user.email && profileUser?.avatar) {
+    if (userContext?.user.user && profileUser?.avatar) {
         return (
             <SerachInputProvider>
                 <SearchUserProvider>
@@ -64,7 +65,10 @@ function App(): ReactElement | null {
                         <Routes>
                             <Route path="*" element={<NotFound />} />
                             {userContext?.user.user ? (
-                                <Route path="/" element={<Home />} />
+                                <Route
+                                    path="/"
+                                    element={<Home profileUser={profileUser} />}
+                                />
                             ) : null}
 
                             {userContext?.user.user ? (
@@ -121,13 +125,15 @@ function App(): ReactElement | null {
             </SerachInputProvider>
         )
     }
+
+    if (userContext?.user.user && !profileUser?.avatar) {
+        return <Loading />
+    }
+
     return (
         <Router>
             <Routes>
                 <Route path="*" element={<NotFound />} />
-                {userContext?.user.user ? (
-                    <Route path="/" element={<Home />} />
-                ) : null}
 
                 {!userContext?.user.user ? (
                     <Route path="/register" element={<Register />} />

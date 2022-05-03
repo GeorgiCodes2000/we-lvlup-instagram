@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable dot-notation */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { ReactElement, useContext, useEffect, useState } from 'react'
@@ -13,7 +15,6 @@ import style from '../styles/pages/Profile.module.scss'
 import { getPosts } from '../utilFunctions/currentLoggedUtils'
 import { PostQueryType } from '../PostQueryType.js'
 import { Loading } from '../components/Loading'
-import { ModalInfo } from '../components/ModalInfo'
 
 export function Profile({
     profileUser,
@@ -108,11 +109,6 @@ export function Profile({
                                                 </p>
                                             </div>
                                             <div className="px-3">
-                                                <ModalInfo
-                                                    followers={
-                                                        profileUser.followers
-                                                    }
-                                                />
                                                 <p className="mb-1 h5">
                                                     {
                                                         profileUser?.followers

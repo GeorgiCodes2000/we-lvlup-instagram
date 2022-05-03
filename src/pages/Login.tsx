@@ -24,6 +24,7 @@ export function Login(): ReactElement | null {
             )
             userContext?.setUser(user)
             localStorage.setItem('user', JSON.stringify(user))
+
             navigate('/')
         } catch (error) {
             if (error instanceof Error) {

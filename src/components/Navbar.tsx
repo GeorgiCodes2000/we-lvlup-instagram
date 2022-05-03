@@ -61,9 +61,10 @@ function Navbar(): ReactElement | null {
     const signUserOut = (): void => {
         signOut(auth)
             .then(() => {
+                window.localStorage.removeItem('user')
                 user?.setUser({})
-                localStorage.clear()
                 navigate('/login')
+                navigate(0)
             })
             .catch(Error)
     }

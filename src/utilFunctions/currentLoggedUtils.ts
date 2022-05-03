@@ -12,10 +12,10 @@ import { PostQueryType } from '../PostQueryType.js'
 
 async function getPosts(id: string | undefined): Promise<PostQueryType[]> {
     const arr: Array<PostQueryType> = []
-    const usersRef = collection(
+    const usersRef = (await collection(
         db,
         'posts'
-    ) as CollectionReference<PostQueryType>
+    )) as CollectionReference<PostQueryType>
     const q = await query(usersRef, where('uploader', '==', id))
 
     const querySnapshot = await getDocs(q)

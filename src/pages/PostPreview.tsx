@@ -71,11 +71,11 @@ export function PostPreview({
     }
 
     const notify = (): any =>
-        toast.error('Comments should be atleast 3 symbols!')
+        toast.error('Comments should be atleast 2 symbols!')
 
     async function comment(): Promise<void> {
         const arr = post?.comments
-        if (inpValue.length > 2) {
+        if (inpValue.length > 1) {
             const commentObj = {
                 id: uuidv4(),
                 comment: inpValue,

@@ -14,6 +14,7 @@ export function ModalInfo({
 }): ReactElement | null {
     const btnRef = useRef<HTMLButtonElement>(null)
     const [infoList, setInfoList] = useState<any>([])
+    const [isLoading, setIsLoading] = useState(true)
 
     async function getInfoUsers(): Promise<void> {
         const arr = [...infoList]
@@ -26,7 +27,7 @@ export function ModalInfo({
                     obj.id = fetchedDoc.id
                     arr.push(obj)
                     if (i === list.length - 1) {
-                        setInfoList(false)
+                        setIsLoading(false)
                     }
                 } catch (e) {
                     console.log('Error getting cached document:', e)
@@ -66,12 +67,6 @@ export function ModalInfo({
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5
-                                className="modal-title"
-                                id="staticBackdropLabel"
-                            >
-                                Modal title
-                            </h5>
                             <button
                                 type="button"
                                 className="btn-close"
@@ -81,7 +76,19 @@ export function ModalInfo({
                             />
                         </div>
                         <div className="modal-body">
-                            {infoList.length > 0 &&
+                            {isLoading ? (
+                                <div className="d-flex justify-content-center">
+                                    <div
+                                        className="spinner-grow text-center"
+                                        role="status"
+                                    >
+                                        <span className="visually-hidden">
+                                            Loading...
+                                        </span>
+                                    </div>
+                                </div>
+                            ) : (
+                                infoList.length > 0 &&
                                 infoList?.map((el: any) => {
                                     return (
                                         <div className="d-flex w-100 d-flex justify-content-between align-items-center">
@@ -101,9 +108,10 @@ export function ModalInfo({
                                             </p>
                                         </div>
                                     )
-                                })}
+                                })
+                            )}
                         </div>
-                        <div className="modal-footer">
+                        <div className="modal-footer d-flex justify-content-center">
                             <button
                                 type="button"
                                 className="btn btn-secondary"

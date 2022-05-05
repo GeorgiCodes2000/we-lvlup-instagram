@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable dot-notation */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -11,6 +13,7 @@ import { SearchUserContext } from '../contexts/SearchedProfileContext/SearchedPr
 import style from '../styles/pages/Profile.module.scss'
 import { getPosts } from '../utilFunctions/currentLoggedUtils'
 import { PostQueryType } from '../PostQueryType'
+import { ModalInfo } from '../components/ModalInfo'
 
 export function ProfileForeign({
     profileUser,
@@ -24,6 +27,8 @@ export function ProfileForeign({
     const searchUsers = useContext(SearchUserContext)
     const input = useContext(SearchInputContext)
     const [posts, setPosts] = useState<PostQueryType[]>([])
+    const [isModalFollowers, setIsModalFollowers] = useState(false)
+    const [isModalFollowing, setIsModalFollowing] = useState(false)
 
     function removeItemOnce(arr: any, value: string): any {
         const index = arr.indexOf(value)
@@ -102,6 +107,18 @@ export function ProfileForeign({
     return (
         <>
             <Navbar />
+            {isModalFollowers && (
+                <ModalInfo
+                    setIsModal={setIsModalFollowers}
+                    list={user.followers}
+                />
+            )}
+            {isModalFollowing && (
+                <ModalInfo
+                    setIsModal={setIsModalFollowing}
+                    list={user.following}
+                />
+            )}
             <section className="h-100 gradient-custom-2">
                 <div className="container py-5 h-100">
                     <div className="row d-flex justify-content-center align-items-center h-100">
@@ -161,7 +178,14 @@ export function ProfileForeign({
                                             </p>
                                         </div>
                                         <div className="px-3">
-                                            <p className="mb-1 h5">
+                                            <p
+                                                className="mb-1 h5 followInfo"
+                                                onClick={() =>
+                                                    setIsModalFollowers(
+                                                        !isModalFollowers
+                                                    )
+                                                }
+                                            >
                                                 {user?.followers.length}
                                             </p>
                                             <p className="small text-muted mb-0">
@@ -169,7 +193,14 @@ export function ProfileForeign({
                                             </p>
                                         </div>
                                         <div>
-                                            <p className="mb-1 h5">
+                                            <p
+                                                className="mb-1 h5 followInfo"
+                                                onClick={() =>
+                                                    setIsModalFollowing(
+                                                        !isModalFollowing
+                                                    )
+                                                }
+                                            >
                                                 {user?.following?.length}
                                             </p>
                                             <p className="small text-muted mb-0">

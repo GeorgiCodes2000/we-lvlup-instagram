@@ -58,7 +58,16 @@ export function SinglePost({
                                 </div>
                             </div>
                         </div>{' '}
-                        <img src={post?.img} className="img-fluid" alt="1" />
+                        <Link
+                            to={`/post/${postLocal.id}`}
+                            className="text-center"
+                        >
+                            <img
+                                src={post?.img}
+                                className="img-fluid"
+                                alt="1"
+                            />
+                        </Link>
                         <div className="p-2">
                             <p className="text-justify">{post?.description}</p>
                             <hr />

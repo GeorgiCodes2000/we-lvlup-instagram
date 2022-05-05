@@ -15,6 +15,7 @@ import style from '../styles/pages/Profile.module.scss'
 import { getPosts } from '../utilFunctions/currentLoggedUtils'
 import { PostQueryType } from '../PostQueryType.js'
 import { Loading } from '../components/Loading'
+import { ModalInfo } from '../components/ModalInfo'
 
 export function Profile({
     profileUser,
@@ -27,6 +28,8 @@ export function Profile({
     const [edit, setEdit] = useState(false)
     const [posts, setPosts] = useState<PostQueryType[] | undefined>()
     const [bioText, setBioText] = useState<string | undefined>()
+    const [isModalFollowers, setIsModalFollowers] = useState(false)
+    const [isModalFollowing, setIsModalFollowing] = useState(false)
     const searchUsers = useContext(SearchUserContext)
     const input = useContext(SearchInputContext)
 
@@ -42,12 +45,31 @@ export function Profile({
         input?.setInput('')
     }, [])
 
+    const editBio = async (): Promise<void> => {
+        await updateDoc(doc(db, 'users', String(profileUser?.id)), {
+            aboutInfo: bioText,
+        })
+        getProfile()
+        setEdit(false)
+    }
+
     if (profileUser) {
         console.log(posts)
         return (
             <>
                 <Navbar />
-
+                {isModalFollowers && (
+                    <ModalInfo
+                        setIsModal={setIsModalFollowers}
+                        list={profileUser.followers}
+                    />
+                )}
+                {isModalFollowing && (
+                    <ModalInfo
+                        setIsModal={setIsModalFollowing}
+                        list={profileUser.following}
+                    />
+                )}
                 <section className="h-100 gradient-custom-2">
                     <div className="container py-5 h-100">
                         <div className="row d-flex justify-content-center align-items-center h-100">
@@ -109,7 +131,14 @@ export function Profile({
                                                 </p>
                                             </div>
                                             <div className="px-3">
-                                                <p className="mb-1 h5">
+                                                <p
+                                                    className="mb-1 h5 followInfo"
+                                                    onClick={() =>
+                                                        setIsModalFollowers(
+                                                            !isModalFollowers
+                                                        )
+                                                    }
+                                                >
                                                     {
                                                         profileUser?.followers
                                                             .length
@@ -121,9 +150,12 @@ export function Profile({
                                             </div>
                                             <div>
                                                 <p
-                                                    className="mb-1 h5"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal"
+                                                    className="mb-1 h5 followInfo"
+                                                    onClick={() =>
+                                                        setIsModalFollowing(
+                                                            !isModalFollowing
+                                                        )
+                                                    }
                                                 >
                                                     {
                                                         profileUser?.following
@@ -179,25 +211,9 @@ export function Profile({
                                                                 type="button"
                                                                 id="button-addon1"
                                                                 data-mdb-ripple-color="dark"
-                                                                onClick={async () => {
-                                                                    await updateDoc(
-                                                                        doc(
-                                                                            db,
-                                                                            'users',
-                                                                            String(
-                                                                                profileUser?.id
-                                                                            )
-                                                                        ),
-                                                                        {
-                                                                            aboutInfo:
-                                                                                bioText,
-                                                                        }
-                                                                    )
-                                                                    getProfile()
-                                                                    setEdit(
-                                                                        false
-                                                                    )
-                                                                }}
+                                                                onClick={
+                                                                    editBio
+                                                                }
                                                             >
                                                                 Edit
                                                             </button>
@@ -212,15 +228,7 @@ export function Profile({
 
                                         <div className="d-flex justify-content-between align-items-center mb-4">
                                             <p className="lead fw-normal mb-0">
-                                                Recent photos
-                                            </p>
-                                            <p className="mb-0">
-                                                <a
-                                                    href="#!"
-                                                    className="text-muted"
-                                                >
-                                                    Show all
-                                                </a>
+                                                Photos
                                             </p>
                                         </div>
 

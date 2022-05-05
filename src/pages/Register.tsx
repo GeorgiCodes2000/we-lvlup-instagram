@@ -93,6 +93,7 @@ export function Register(): ReactElement | null {
                                     name="email"
                                     placeholder="Mobile Number or Email"
                                     type="email"
+                                    required
                                     onChange={(e) =>
                                         setRegisterEmail(e.target.value)
                                     }
@@ -105,6 +106,7 @@ export function Register(): ReactElement | null {
                                     name="fullname"
                                     placeholder="Full Name"
                                     type="text"
+                                    required
                                     onChange={(e) =>
                                         setFullName(e.target.value)
                                     }
@@ -117,6 +119,7 @@ export function Register(): ReactElement | null {
                                     name="username"
                                     placeholder="Username"
                                     type="text"
+                                    required
                                     onChange={(e) =>
                                         setUsername(e.target.value)
                                     }
@@ -129,6 +132,7 @@ export function Register(): ReactElement | null {
                                     name="password"
                                     placeholder="Password"
                                     type="password"
+                                    required
                                     onChange={(e) =>
                                         setRegisterPassword(e.target.value)
                                     }

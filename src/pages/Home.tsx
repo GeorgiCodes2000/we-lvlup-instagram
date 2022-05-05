@@ -11,6 +11,7 @@ import { UserQueryType } from '../UserQueryType'
 import { db } from '../firebase.config.js'
 import { Loading } from '../components/Loading'
 import { SingleUser } from '../components/SingleUser'
+// import { SearchInputContext } from '../contexts/SearchInputContext/SearchInputContext'
 
 export function Home({
     profileUser,
@@ -22,6 +23,7 @@ export function Home({
     const searchUsers = useContext(SearchUserContext)
     const [followingUsers, setFollowingUsers] = useState<any>([])
     const [isLoading, setIsLoading] = useState(true)
+    // const input = useContext(SearchInputContext)
 
     async function getFollowingUsers(): Promise<void> {
         const arr = [...followingUsers]
@@ -44,6 +46,8 @@ export function Home({
     }
 
     useEffect(() => {
+        // searchUsers?.setSearchedUser([])
+        // input?.setInput('')
         getFollowingUsers()
     }, [])
 
@@ -56,20 +60,24 @@ export function Home({
         )
     }
 
-    return (
-        <div>
-            <Navbar />
-            {isLoading ? (
-                <Loading />
-            ) : (
-                followingUsers.map((el: UserQueryType) => (
-                    <SingleUser
-                        user={el}
-                        key={el.id}
-                        profileUser={profileUser}
-                    />
-                ))
-            )}
-        </div>
-    )
+    if (followingUsers.length > 0) {
+        return (
+            <div>
+                <Navbar />
+                {isLoading ? (
+                    <Loading />
+                ) : (
+                    followingUsers.map((el: UserQueryType) => (
+                        <SingleUser
+                            user={el}
+                            key={el.id}
+                            profileUser={profileUser}
+                        />
+                    ))
+                )}
+            </div>
+        )
+    }
+
+    return <Navbar />
 }

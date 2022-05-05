@@ -24,10 +24,10 @@ export default function Upload({ profileUser }: any): ReactElement | null {
             `/${userContext?.user.user.uid}/${file.name + uuidv4()}`
         )
         const uploadTask = uploadBytesResumable(storageRef, file)
-        uploadTask.on('state_changed', () => {
+        console.log(uploadTask)
+        uploadTask.on('state_changed', null, null, () => {
             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                 const posts = collection(db, 'posts')
-
                 async function savePost(): Promise<void> {
                     await addDoc(posts, {
                         img: url,

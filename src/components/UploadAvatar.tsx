@@ -22,7 +22,7 @@ export default function UploadAvatar({
             `/${userContext?.user.user.uid}/${file.name}`
         )
         const uploadTask = uploadBytesResumable(storageRef, file)
-        uploadTask.on('state_changed', () => {
+        uploadTask.on('state_changed', null, null, () => {
             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                 ;(async () => {
                     await updateDoc(doc(db, 'users', String(profileUser?.id)), {

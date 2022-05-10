@@ -98,6 +98,10 @@ export function PostPreview({
         getPost()
     }, [])
 
+    if (post) {
+        console.log(post)
+    }
+
     return (
         <>
             <Navbar />
@@ -147,7 +151,7 @@ export function PostPreview({
                                                     className="fa fa-heart"
                                                     onClick={like}
                                                 />
-                                                <span>
+                                                <span className="ms-3 fs-5">
                                                     {post?.likes.length}
                                                 </span>
                                             </>
@@ -157,16 +161,15 @@ export function PostPreview({
                                                     className="fa fa-heart-o"
                                                     onClick={like}
                                                 />
-                                                <span>
+                                                <span className="ms-3 fs-5">
                                                     {post?.likes.length}
                                                 </span>
                                             </>
                                         )}
-                                        <i className="fa fa-smile-o ml-2" />{' '}
                                     </div>
                                     <div className="d-flex flex-row muted-color">
                                         {' '}
-                                        <span>
+                                        <span className="fs-5">
                                             {post?.comments.length} comments
                                         </span>{' '}
                                     </div>
@@ -196,7 +199,7 @@ export function PostPreview({
                                                     <span className="name">
                                                         {el?.commentatorName}
                                                     </span>{' '}
-                                                    <small className="comment-text">
+                                                    <small className="comment-text fs-6">
                                                         {el?.comment}
                                                     </small>
                                                     {/* <div className="d-flex flex-row align-items-center status">

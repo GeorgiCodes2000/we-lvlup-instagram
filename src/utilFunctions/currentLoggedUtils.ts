@@ -3,6 +3,7 @@ import {
     CollectionReference,
     doc,
     getDocs,
+    orderBy,
     query,
     updateDoc,
     where,
@@ -16,7 +17,11 @@ async function getPosts(id: string | undefined): Promise<PostQueryType[]> {
         db,
         'posts'
     )) as CollectionReference<PostQueryType>
-    const q = await query(usersRef, where('uploader', '==', id))
+    const q = await query(
+        usersRef,
+        where('uploader', '==', id),
+        orderBy('createdAt', 'desc')
+    )
 
     const querySnapshot = await getDocs(q)
 

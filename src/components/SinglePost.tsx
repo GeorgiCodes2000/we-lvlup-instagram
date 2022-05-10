@@ -80,7 +80,9 @@ export function SinglePost({
                                                 className="fa fa-heart"
                                                 onClick={like}
                                             />
-                                            <span>{post?.likes.length}</span>
+                                            <span className="ms-3 fs-5">
+                                                {post?.likes.length}
+                                            </span>
                                         </>
                                     ) : (
                                         <>
@@ -88,10 +90,11 @@ export function SinglePost({
                                                 className="fa fa-heart-o"
                                                 onClick={like}
                                             />
-                                            <span>{post?.likes.length}</span>
+                                            <span className="ms-3 fs-5">
+                                                {post?.likes.length}
+                                            </span>
                                         </>
                                     )}
-                                    <i className="fa fa-smile-o ml-2" />{' '}
                                 </div>
                                 <div className="d-flex flex-row muted-color">
                                     {' '}

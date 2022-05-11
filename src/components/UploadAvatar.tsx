@@ -15,6 +15,7 @@ export default function UploadAvatar({
     const fileInputRef = useRef() as React.MutableRefObject<HTMLInputElement>
     const [image, setImage] = useState<File>()
     const [preview, setPreview] = useState<string | null>()
+    const [disabled, setDisabled] = useState(false)
 
     const uploadToDb = (file: File): void => {
         const storageRef = ref(
@@ -22,16 +23,27 @@ export default function UploadAvatar({
             `/${userContext?.user.user.uid}/${file.name}`
         )
         const uploadTask = uploadBytesResumable(storageRef, file)
-        uploadTask.on('state_changed', null, null, () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                ;(async () => {
-                    await updateDoc(doc(db, 'users', String(profileUser?.id)), {
-                        avatar: url,
-                    })
-                    getProfile()
-                })()
-            })
-        })
+        uploadTask.on(
+            'state_changed',
+            () => {
+                setDisabled(true)
+            },
+            null,
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    ;(async () => {
+                        await updateDoc(
+                            doc(db, 'users', String(profileUser?.id)),
+                            {
+                                avatar: url,
+                            }
+                        )
+                        getProfile()
+                        setDisabled(false)
+                    })()
+                })
+            }
+        )
     }
 
     useEffect(() => {
@@ -87,6 +99,7 @@ export default function UploadAvatar({
                 <button
                     type="submit"
                     className="btn btn-primary"
+                    disabled={disabled}
                     onClick={(event) => {
                         event.preventDefault()
                         if (image) {

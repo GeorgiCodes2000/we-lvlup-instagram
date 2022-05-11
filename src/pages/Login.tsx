@@ -12,6 +12,7 @@ export function Login(): ReactElement | null {
     const [loginPassword, setLoginPassword] = useState('')
     const navigate = useNavigate()
     const userContext = useContext(UserContext)
+    const [disabled, setDisabled] = useState(false)
 
     const notify = (): any => toast.error('Wrong email or password!')
 
@@ -20,17 +21,21 @@ export function Login(): ReactElement | null {
         loginPasswordInp: string
     ): Promise<void> => {
         try {
+            setDisabled(true)
             const user = await signInWithEmailAndPassword(
                 auth,
                 loginEmailInp,
                 loginPasswordInp
             )
             userContext?.setUser(user)
+            setDisabled(false)
             localStorage.setItem('user', JSON.stringify(user))
 
             navigate('/')
         } catch (error) {
             if (error instanceof Error) {
+                setDisabled(false)
+
                 notify()
             }
         }
@@ -96,6 +101,7 @@ export function Login(): ReactElement | null {
                                 </div>
                                 <div className="mb-2">
                                     <button
+                                        disabled={disabled}
                                         className="btn btn-primary fw-bold w-100 bg-gradient"
                                         type="submit"
                                     >

@@ -16,6 +16,7 @@ export default function Upload({ profileUser }: any): ReactElement | null {
     const [image, setImage] = useState<File>()
     const [preview, setPreview] = useState<string | null>()
     const [description, setDescription] = useState('')
+    const [disabled, setDisabled] = useState(false)
     const navigate = useNavigate()
 
     const uploadToDb = (file: File): void => {
@@ -25,23 +26,31 @@ export default function Upload({ profileUser }: any): ReactElement | null {
         )
         const uploadTask = uploadBytesResumable(storageRef, file)
         console.log(uploadTask)
-        uploadTask.on('state_changed', null, null, () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                const posts = collection(db, 'posts')
-                async function savePost(): Promise<void> {
-                    await addDoc(posts, {
-                        img: url,
-                        uploader: profileUser?.id,
-                        description,
-                        likes: [],
-                        comments: [],
-                        createdAt: serverTimestamp(),
-                    })
-                }
-                savePost()
-                navigate('/profile')
-            })
-        })
+        uploadTask.on(
+            'state_changed',
+            () => {
+                setDisabled(true)
+            },
+            null,
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    const posts = collection(db, 'posts')
+                    async function savePost(): Promise<void> {
+                        await addDoc(posts, {
+                            img: url,
+                            uploader: profileUser?.id,
+                            description,
+                            likes: [],
+                            comments: [],
+                            createdAt: serverTimestamp(),
+                        })
+                    }
+                    savePost()
+                    setDisabled(true)
+                    navigate('/profile')
+                })
+            }
+        )
     }
 
     useEffect(() => {
@@ -111,7 +120,7 @@ export default function Upload({ profileUser }: any): ReactElement | null {
                         </div>
                         <input
                             type="text"
-                            className="form-control"
+                            className="form-control w-50"
                             aria-label="Default"
                             aria-describedby="inputGroup-sizing-default"
                             value={description}
@@ -123,7 +132,8 @@ export default function Upload({ profileUser }: any): ReactElement | null {
 
                     <button
                         type="submit"
-                        className="btn btn-dark"
+                        className="btn btn-dark w-25 m-auto"
+                        disabled={disabled}
                         onClick={(event) => {
                             event.preventDefault()
                             if (image) {
@@ -134,13 +144,6 @@ export default function Upload({ profileUser }: any): ReactElement | null {
                         Post
                     </button>
                 </form>
-                {/* {preview && preview?.length > 2 ? (
-                <img
-                    src={preview}
-                    alt="nothing"
-                    style={{ objectFit: 'cover' }}
-                />
-            ) : null} */}
             </div>
         </>
     )

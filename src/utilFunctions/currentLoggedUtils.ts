@@ -5,11 +5,13 @@ import {
     getDocs,
     orderBy,
     query,
+    Timestamp,
     updateDoc,
     where,
 } from 'firebase/firestore'
 import { db } from '../firebase.config.js'
 import { PostQueryType } from '../PostQueryType.js'
+import { StoryQueryType } from '../StoryQueryType.js'
 
 async function getPosts(id: string | undefined): Promise<PostQueryType[]> {
     const arr: Array<PostQueryType> = []
@@ -21,6 +23,34 @@ async function getPosts(id: string | undefined): Promise<PostQueryType[]> {
         usersRef,
         where('uploader', '==', id),
         orderBy('createdAt', 'desc')
+    )
+
+    const querySnapshot = await getDocs(q)
+
+    querySnapshot.forEach((doC) => {
+        if (doC.data()) {
+            const obj = { ...doC.data() }
+            obj.id = doC.id
+            console.log(obj)
+            arr.push(obj)
+        }
+    })
+    return arr
+}
+
+async function getStories(id: string | undefined): Promise<StoryQueryType[]> {
+    const tsToMillis = Timestamp.now().toMillis()
+    const compareDate = new Date(tsToMillis - 24 * 60 * 60 * 1000)
+
+    const arr: Array<StoryQueryType> = []
+    const usersRef = (await collection(
+        db,
+        'stories'
+    )) as CollectionReference<StoryQueryType>
+    const q = await query(
+        usersRef,
+        where('uploader', '==', id),
+        where('createdAt', '>', compareDate)
     )
 
     const querySnapshot = await getDocs(q)
@@ -64,3 +94,4 @@ export { getPosts }
 export { removeItemAll }
 export { updateLikes }
 export { updateComments }
+export { getStories }

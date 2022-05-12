@@ -11,6 +11,7 @@ import { UserQueryType } from '../UserQueryType'
 import { db } from '../firebase.config.js'
 import { Loading } from '../components/Loading'
 import { SingleUser } from '../components/SingleUser'
+import { Stories } from '../components/Stories'
 // import { SearchInputContext } from '../contexts/SearchInputContext/SearchInputContext'
 
 export function Home({
@@ -64,6 +65,10 @@ export function Home({
         return (
             <div>
                 <Navbar />
+                <Stories
+                    followingUsers={followingUsers}
+                    profileUser={profileUser}
+                />
                 {isLoading ? (
                     <Loading />
                 ) : (

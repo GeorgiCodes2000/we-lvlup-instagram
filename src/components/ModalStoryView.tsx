@@ -1,7 +1,6 @@
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { ReactElement, useEffect, useRef, useState } from 'react'
-import { getStories } from '../utilFunctions/currentLoggedUtils'
+import { ReactElement, useEffect, useRef } from 'react'
 
 export function ModalStoryView({
     setOpenStoryModal,
@@ -12,18 +11,9 @@ export function ModalStoryView({
 }): ReactElement | null {
     const btnRef = useRef<HTMLButtonElement>(null)
 
-    const [stories, setStories] = useState<any>()
-    const [loading, setLoading] = useState(true)
-
     useEffect(() => {
         if (btnRef.current) {
             btnRef.current.click()
-
-            const arr = getStories(user.id)
-            arr.then((arr1) => {
-                setStories(arr1)
-                setLoading(false)
-            })
         }
     }, [])
 
@@ -58,10 +48,10 @@ export function ModalStoryView({
                         </div>
                         <div className="modal-body">
                             {' '}
-                            {stories && stories.length > 0 && !loading ? (
+                            {user.stories.img.length > 0 ? (
                                 <img
                                     className="story-preview"
-                                    src={stories[0].img}
+                                    src={user.stories.img}
                                     alt="losho"
                                 />
                             ) : (

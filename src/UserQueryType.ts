@@ -1,3 +1,5 @@
+import { Stories } from './types'
+
 export type UserQueryType = {
     id: string
     followers: []
@@ -8,4 +10,5 @@ export type UserQueryType = {
     avatar: string
     aboutInfo: string
     posts?: []
+    stories?: Stories
 }

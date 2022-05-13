@@ -8,9 +8,13 @@ import { ModalStoryView } from './ModalStoryView'
 export function Stories({
     followingUsers,
     profileUser,
+
+    getProfile,
 }: {
     followingUsers: any
     profileUser: any
+
+    getProfile: any
 }): ReactElement | null {
     const [image, setImage] = useState<File>()
     const [preview, setPreview] = useState<string | null>()
@@ -37,6 +41,7 @@ export function Stories({
                     setPreview={setPreview}
                     profileUser={profileUser}
                     image={image}
+                    getProfile={getProfile}
                 />
             ) : null}
 
@@ -71,7 +76,9 @@ export function Stories({
                         </label>
                     </button>
 
-                    {openStoryModal && profileUser.id === openStoryModalId ? (
+                    {openStoryModal &&
+                    profileUser.id === openStoryModalId &&
+                    profileUser.stories ? (
                         <ModalStoryView
                             setOpenStoryModal={setOpenStoryModal}
                             user={profileUser}
@@ -81,26 +88,30 @@ export function Stories({
                     <small>You</small>
                 </div>
                 {followingUsers.map((el: any) => {
-                    return (
-                        <div className="d-flex flex-column justify-content-center align-items-center mx-2">
-                            <img
-                                src={el.avatar}
-                                className="circular--square"
-                                alt={el.fullNameInp}
-                                onClick={() => {
-                                    setOpenStoryModal(true)
-                                    setOpenStoryModalId(el.id)
-                                }}
-                            />
-                            {openStoryModal && el.id === openStoryModalId ? (
-                                <ModalStoryView
-                                    setOpenStoryModal={setOpenStoryModal}
-                                    user={el}
+                    if (el.stories) {
+                        return (
+                            <div className="d-flex flex-column justify-content-center align-items-center mx-2">
+                                <img
+                                    src={el.avatar}
+                                    className="circular--square"
+                                    alt={el.fullNameInp}
+                                    onClick={() => {
+                                        setOpenStoryModal(true)
+                                        setOpenStoryModalId(el.id)
+                                    }}
                                 />
-                            ) : null}
-                            <small>{el.fullNameInp}</small>
-                        </div>
-                    )
+                                {openStoryModal &&
+                                el.id === openStoryModalId ? (
+                                    <ModalStoryView
+                                        setOpenStoryModal={setOpenStoryModal}
+                                        user={el}
+                                    />
+                                ) : null}
+                                <small>{el.fullNameInp}</small>
+                            </div>
+                        )
+                    }
+                    return null
                 })}
             </div>
         </div>

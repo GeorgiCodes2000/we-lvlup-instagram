@@ -1,26 +1,27 @@
+/* eslint-disable react/jsx-no-bind */
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable no-await-in-loop */
 import { ReactElement, useContext, useEffect, useState } from 'react'
 // import { useNavigate } from 'react-router-dom'
-import { doc, getDoc } from 'firebase/firestore'
+import { deleteField, doc, getDoc, updateDoc } from 'firebase/firestore'
 import Navbar from '../components/Navbar'
 import { SearchResults } from '../components/SearchResults'
-import { UserContext } from '../contexts/UserContext/UserContext'
 import { SearchUserContext } from '../contexts/SearchedProfileContext/SearchedProfilesContext'
 import { UserQueryType } from '../UserQueryType'
 import { db } from '../firebase.config.js'
 import { Loading } from '../components/Loading'
 import { SingleUser } from '../components/SingleUser'
 import { Stories } from '../components/Stories'
+
 // import { SearchInputContext } from '../contexts/SearchInputContext/SearchInputContext'
 
 export function Home({
     profileUser,
+    getProfile,
 }: {
     profileUser: UserQueryType
+    getProfile: any
 }): ReactElement | null {
-    const user = useContext(UserContext)
-    console.log(user)
     const searchUsers = useContext(SearchUserContext)
     const [followingUsers, setFollowingUsers] = useState<any>([])
     const [isLoading, setIsLoading] = useState(true)
@@ -33,6 +34,12 @@ export function Home({
                 const docRef = await doc(db, 'users', profileUser.following[i])
                 const fetchedDoc = await getDoc(docRef)
                 const obj = { ...fetchedDoc.data() }
+                if (obj.stories && new Date() > obj.stories.expire) {
+                    await updateDoc(docRef, {
+                        stories: deleteField(),
+                    })
+                    delete obj.stories
+                }
                 obj.id = fetchedDoc.id
                 arr.push(obj)
                 if (i === profileUser?.following.length - 1) {
@@ -42,16 +49,17 @@ export function Home({
                 console.log('Error getting cached document:', e)
             }
         }
-
+        console.log(arr)
         setFollowingUsers(arr)
     }
 
     useEffect(() => {
         // searchUsers?.setSearchedUser([])
-        // input?.setInput('')
+        // input?.setInput('')\
         getFollowingUsers()
     }, [])
 
+    console.log('home render')
     if (searchUsers?.searchedUser && searchUsers?.searchedUser?.length > 0) {
         return (
             <>
@@ -68,6 +76,7 @@ export function Home({
                 <Stories
                     followingUsers={followingUsers}
                     profileUser={profileUser}
+                    getProfile={getProfile}
                 />
                 {isLoading ? (
                     <Loading />

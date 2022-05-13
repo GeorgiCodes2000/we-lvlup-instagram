@@ -67,7 +67,12 @@ function App(): ReactElement | null {
                             {userContext?.user.user ? (
                                 <Route
                                     path="/"
-                                    element={<Home profileUser={profileUser} />}
+                                    element={
+                                        <Home
+                                            profileUser={profileUser}
+                                            getProfile={getProfile}
+                                        />
+                                    }
                                 />
                             ) : null}
 

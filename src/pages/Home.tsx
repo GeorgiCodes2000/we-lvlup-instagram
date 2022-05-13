@@ -57,6 +57,12 @@ export function Home({
         // searchUsers?.setSearchedUser([])
         // input?.setInput('')\
         getFollowingUsers()
+        const interval = setInterval(() => {
+            getFollowingUsers()
+            getProfile()
+        }, 20000)
+
+        return () => clearInterval(interval)
     }, [])
 
     console.log('home render')

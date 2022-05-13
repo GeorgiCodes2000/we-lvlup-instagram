@@ -1,4 +1,5 @@
 import { ReactElement, useEffect, useState } from 'react'
+import { PostQueryType } from '../PostQueryType'
 import { UserQueryType } from '../UserQueryType'
 import { getPosts } from '../utilFunctions/currentLoggedUtils'
 import { Loading } from './Loading'
@@ -11,7 +12,7 @@ export function SingleUser({
     user: UserQueryType
     profileUser: UserQueryType
 }): ReactElement | null {
-    const [posts, setPosts] = useState<any>()
+    const [posts, setPosts] = useState<PostQueryType[]>()
     const [isLoading, setIsLoadin] = useState(true)
 
     useEffect(() => {

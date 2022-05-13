@@ -4,13 +4,14 @@
 import { doc, getDoc } from 'firebase/firestore'
 import { ReactElement, useEffect, useRef, useState } from 'react'
 import { db } from '../firebase.config.js'
+import { UserQueryType } from '../UserQueryType.js'
 
 export function ModalInfo({
     setIsModal,
     list,
 }: {
     setIsModal: React.Dispatch<React.SetStateAction<boolean>>
-    list: any
+    list: Array<string>
 }): ReactElement | null {
     const btnRef = useRef<HTMLButtonElement>(null)
     const [infoList, setInfoList] = useState<any>([])
@@ -89,7 +90,7 @@ export function ModalInfo({
                                 </div>
                             ) : (
                                 infoList.length > 0 &&
-                                infoList?.map((el: any) => {
+                                infoList?.map((el: UserQueryType) => {
                                     return (
                                         <div className="d-flex w-100 d-flex justify-content-between align-items-center">
                                             <div

@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { ReactElement, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { PostQueryType } from '../PostQueryType'
 import { UserQueryType } from '../UserQueryType'
 import { removeItemAll, updateLikes } from '../utilFunctions/currentLoggedUtils'
 
@@ -11,7 +12,7 @@ export function SinglePost({
     user,
     profileUser,
 }: {
-    post: any
+    post: PostQueryType
     user: UserQueryType
     profileUser: UserQueryType
 }): ReactElement | null {

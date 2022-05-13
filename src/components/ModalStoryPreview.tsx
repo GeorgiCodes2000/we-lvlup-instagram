@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { doc, updateDoc } from 'firebase/firestore'
 import { UserContext } from '../contexts/UserContext/UserContext'
 import { db, storage } from '../firebase.config.js'
+import { UserQueryType } from '../UserQueryType'
 
 export function ModalStoryPreview({
     preview,
@@ -16,7 +17,7 @@ export function ModalStoryPreview({
 }: {
     preview: string
     setPreview: React.Dispatch<React.SetStateAction<string | null | undefined>>
-    profileUser: any
+    profileUser: UserQueryType
     image: File | undefined
 
     getProfile: any

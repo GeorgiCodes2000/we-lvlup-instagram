@@ -43,9 +43,15 @@ function App(): ReactElement | null {
 
             const querySnapshot = await getDocs(q)
 
-            querySnapshot.forEach((doC) => {
+            querySnapshot.forEach(async (doC) => {
                 if (doC.data()) {
                     const obj = { ...doC.data() }
+                    if (
+                        obj.stories &&
+                        new Date() > obj.stories.expire.toDate()
+                    ) {
+                        delete obj.stories
+                    }
                     obj.id = doC.id
                     SetProfileUser(obj)
                 }

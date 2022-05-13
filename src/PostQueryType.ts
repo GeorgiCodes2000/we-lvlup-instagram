@@ -1,6 +1,6 @@
 export type PostQueryType = {
     id: string
-    likes: []
+    likes: Array<string>
     img: string
     description: string
     comments: []

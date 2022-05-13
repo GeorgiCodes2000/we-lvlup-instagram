@@ -34,7 +34,7 @@ export function Home({
                 const docRef = await doc(db, 'users', profileUser.following[i])
                 const fetchedDoc = await getDoc(docRef)
                 const obj = { ...fetchedDoc.data() }
-                if (obj.stories && new Date() > obj.stories.expire) {
+                if (obj.stories && new Date() > obj.stories.expire.toDate()) {
                     await updateDoc(docRef, {
                         stories: deleteField(),
                     })
@@ -56,6 +56,7 @@ export function Home({
     useEffect(() => {
         // searchUsers?.setSearchedUser([])
         // input?.setInput('')\
+
         getFollowingUsers()
         const interval = setInterval(() => {
             getFollowingUsers()

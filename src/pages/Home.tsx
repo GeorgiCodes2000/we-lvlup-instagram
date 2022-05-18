@@ -49,7 +49,7 @@ export function Home({
                 console.log('Error getting cached document:', e)
             }
         }
-        console.log(arr)
+
         setFollowingUsers(arr)
     }
 
@@ -61,12 +61,11 @@ export function Home({
         const interval = setInterval(() => {
             getFollowingUsers()
             getProfile()
-        }, 20000)
+        }, 1000000)
 
         return () => clearInterval(interval)
     }, [])
 
-    console.log('home render')
     if (searchUsers?.searchedUser && searchUsers?.searchedUser?.length > 0) {
         return (
             <>

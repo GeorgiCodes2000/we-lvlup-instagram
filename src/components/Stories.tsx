@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { ReactElement, useEffect, useState } from 'react'
+import { UserQueryType } from '../UserQueryType'
 import { ModalStoryPreview } from './ModalStoryPreview'
 import { ModalStoryView } from './ModalStoryView'
 
@@ -12,7 +13,7 @@ export function Stories({
     getProfile,
 }: {
     followingUsers: any
-    profileUser: any
+    profileUser: UserQueryType
 
     getProfile: any
 }): ReactElement | null {

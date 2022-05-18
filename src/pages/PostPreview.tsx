@@ -98,10 +98,6 @@ export function PostPreview({
         getPost()
     }, [])
 
-    if (post) {
-        console.log(post)
-    }
-
     return (
         <>
             <Navbar />

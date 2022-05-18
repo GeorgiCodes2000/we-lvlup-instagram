@@ -31,7 +31,7 @@ async function getPosts(id: string | undefined): Promise<PostQueryType[]> {
         if (doC.data()) {
             const obj = { ...doC.data() }
             obj.id = doC.id
-            console.log(obj)
+
             arr.push(obj)
         }
     })
@@ -59,7 +59,7 @@ async function getStories(id: string | undefined): Promise<StoryQueryType[]> {
         if (doC.data()) {
             const obj = { ...doC.data() }
             obj.id = doC.id
-            console.log(obj)
+
             arr.push(obj)
         }
     })

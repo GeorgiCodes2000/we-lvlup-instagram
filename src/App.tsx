@@ -26,7 +26,6 @@ import { Loading } from './components/Loading'
 
 function App(): ReactElement | null {
     const userContext = useContext(UserContext)
-    console.log(userContext?.user.user)
 
     const [profileUser, SetProfileUser] = useState<UserQueryType | undefined>()
 

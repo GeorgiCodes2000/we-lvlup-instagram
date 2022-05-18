@@ -23,6 +23,7 @@ export function ModalStoryPreview({
     getProfile: any
 }): ReactElement | null {
     const btnRef = useRef<HTMLButtonElement>(null)
+    const closeRef = useRef<HTMLButtonElement>(null)
     const userContext = useContext(UserContext)
     const [disabled, setDisabled] = useState(false)
 
@@ -66,6 +67,8 @@ export function ModalStoryPreview({
                             )
                             getProfile()
                             setDisabled(false)
+                            closeRef.current?.click()
+                            setPreview(null)
                         })()
                     })
                 }
@@ -115,6 +118,7 @@ export function ModalStoryPreview({
                                 className="btn btn-secondary"
                                 data-bs-dismiss="modal"
                                 onClick={() => setPreview(null)}
+                                ref={closeRef}
                             >
                                 Close
                             </button>

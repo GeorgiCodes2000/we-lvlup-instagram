@@ -1,4 +1,4 @@
-import { ReactElement, useContext } from 'react'
+import { ReactElement, useContext, useEffect } from 'react'
 import '../styles/pages/navbar.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import { signOut } from 'firebase/auth'
@@ -24,11 +24,11 @@ function Navbar(): ReactElement | null {
     async function getProfile(): Promise<void> {
         const arr: UserQueryType[] = []
         const text = input?.input
-        console.log(text?.length)
+        console.log(arr)
+        console.log(text)
         const end = text?.replace(/.$/, (c: string) =>
             String.fromCharCode(c.charCodeAt(0) + 1)
         )
-        console.log('tuka inputa')
         const usersRef = collection(
             db,
             'users'
@@ -49,11 +49,12 @@ function Navbar(): ReactElement | null {
             }
         })
         if (arr.length > 0) {
-            console.log(input?.input.length)
             searchUsers?.setSearchedUser(arr)
             navigate('/')
+        } else {
+            searchUsers?.setSearchedUser([])
         }
-        if (input?.input && input.input.length <= 1) {
+        if (input?.input && input.input.length === 0) {
             searchUsers?.setSearchedUser([])
         }
     }
@@ -68,6 +69,10 @@ function Navbar(): ReactElement | null {
             })
             .catch(Error)
     }
+
+    useEffect(() => {
+        getProfile()
+    }, [input?.input])
 
     return (
         <div className="navigation">
@@ -86,8 +91,6 @@ function Navbar(): ReactElement | null {
                     value={input?.input}
                     onChange={(event) => {
                         input?.setInput(event.target.value)
-
-                        getProfile()
                     }}
                 />
                 <div className="search-container">

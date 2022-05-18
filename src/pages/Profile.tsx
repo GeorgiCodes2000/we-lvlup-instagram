@@ -54,7 +54,6 @@ export function Profile({
     }
 
     if (profileUser) {
-        console.log(posts)
         return (
             <>
                 <Navbar />

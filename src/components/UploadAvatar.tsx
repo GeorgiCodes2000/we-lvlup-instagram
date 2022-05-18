@@ -78,7 +78,6 @@ export default function UploadAvatar({
                         onClick={(event) => {
                             event.preventDefault()
                             fileInputRef.current.click()
-                            console.log('??')
                         }}
                     >
                         Change profile
@@ -88,7 +87,6 @@ export default function UploadAvatar({
                     type="file"
                     style={{ display: 'none' }}
                     ref={fileInputRef}
-                    accept="images/*"
                     onChange={(event) => {
                         if (event.target.files) {
                             const file = event.target.files[0]

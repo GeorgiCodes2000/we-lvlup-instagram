@@ -25,7 +25,7 @@ export default function Upload({ profileUser }: any): ReactElement | null {
             `/${userContext?.user.user.uid}/${file.name + uuidv4()}`
         )
         const uploadTask = uploadBytesResumable(storageRef, file)
-        console.log(uploadTask)
+
         uploadTask.on(
             'state_changed',
             () => {
@@ -100,7 +100,6 @@ export default function Upload({ profileUser }: any): ReactElement | null {
                         type="file"
                         style={{ display: 'none' }}
                         ref={fileInputRef}
-                        accept="images/*"
                         onChange={(event) => {
                             if (event.target.files) {
                                 const file = event.target.files[0]

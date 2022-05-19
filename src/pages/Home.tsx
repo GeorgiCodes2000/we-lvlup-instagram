@@ -3,8 +3,14 @@
 /* eslint-disable no-await-in-loop */
 import { ReactElement, useContext, useEffect, useState } from 'react'
 // import { useNavigate } from 'react-router-dom'
-import { deleteField, doc, getDoc, updateDoc } from 'firebase/firestore'
-import Navbar from '../components/Navbar'
+import {
+    collection,
+    DocumentData,
+    onSnapshot,
+    query,
+    QuerySnapshot,
+    where,
+} from 'firebase/firestore'
 import { SearchResults } from '../components/SearchResults'
 import { SearchUserContext } from '../contexts/SearchedProfileContext/SearchedProfilesContext'
 import { UserQueryType } from '../UserQueryType'
@@ -23,62 +29,96 @@ export function Home({
     getProfile: any
 }): ReactElement | null {
     const searchUsers = useContext(SearchUserContext)
-    const [followingUsers, setFollowingUsers] = useState<any>([])
+    const [followingUsers, setFollowingUsers] = useState<UserQueryType[]>([])
     const [isLoading, setIsLoading] = useState(true)
     // const input = useContext(SearchInputContext)
 
-    async function getFollowingUsers(): Promise<void> {
-        const arr = [...followingUsers]
-        for (let i = 0; i < profileUser?.following.length; i += 1) {
-            try {
-                const docRef = await doc(db, 'users', profileUser.following[i])
-                const fetchedDoc = await getDoc(docRef)
-                const obj = { ...fetchedDoc.data() }
-                if (obj.stories && new Date() > obj.stories.expire.toDate()) {
-                    await updateDoc(docRef, {
-                        stories: deleteField(),
-                    })
-                    delete obj.stories
-                }
-                obj.id = fetchedDoc.id
-                arr.push(obj)
-                if (i === profileUser?.following.length - 1) {
-                    setIsLoading(false)
-                }
-            } catch (e) {
-                console.log('Error getting cached document:', e)
-            }
-        }
+    // async function getFollowingUsers(): Promise<void> {
+    //     const arr = [...followingUsers]
+    //     for (let i = 0; i < profileUser?.following.length; i += 1) {
+    //         try {
+    //             const docRef = await doc(db, 'users', profileUser.following[i])
+    //             const fetchedDoc = await getDoc(docRef)
+    //             const obj = { ...fetchedDoc.data() }
+    //             if (obj.stories && new Date() > obj.stories.expire.toDate()) {
+    //                 await updateDoc(docRef, {
+    //                     stories: deleteField(),
+    //                 })
+    //                 delete obj.stories
+    //             }
+    //             obj.id = fetchedDoc.id
+    //             arr.push(obj)
+    //             if (i === profileUser?.following.length - 1) {
+    //                 setIsLoading(false)
+    //             }
+    //         } catch (e) {
+    //             console.log('Error getting cached document:', e)
+    //         }
+    //     }
 
-        setFollowingUsers(arr)
-    }
+    //     setFollowingUsers(arr)
+    // }
 
     useEffect(() => {
-        // searchUsers?.setSearchedUser([])
-        // input?.setInput('')\
+        getProfile()
 
-        getFollowingUsers()
-        const interval = setInterval(() => {
-            getFollowingUsers()
-            getProfile()
-        }, 1000000)
+        const users = query(
+            collection(db, 'users'),
+            where('followers', 'array-contains-any', [profileUser.id])
+        )
 
-        return () => clearInterval(interval)
+        const unsubscribe = onSnapshot(
+            users,
+            (querySnapshot: QuerySnapshot<DocumentData>) => {
+                const allUsers: UserQueryType[] = []
+                querySnapshot.forEach((docUser) => {
+                    allUsers.push({
+                        ...(docUser.data() as UserQueryType),
+                        id: docUser.id,
+                    })
+                })
+
+                if (isLoading) setIsLoading(false)
+                setFollowingUsers(allUsers)
+            }
+        )
+        return () => unsubscribe()
     }, [])
 
+    // useEffect(() => {
+    //     const now = Timestamp.now()
+    //     const users = query(
+    //         collection(db, 'users'),
+    //         where('followers', 'array-contains-any', [profileUser.id]),
+    //         where('expire', '<', now)
+    //     )
+
+    //     const unsubscribe = onSnapshot(
+    //         users,
+    //         (querySnapshot: QuerySnapshot<DocumentData>) => {
+    //             const allUsers: any = []
+    //             querySnapshot.forEach((docUser) => {
+    //                 allUsers.push({ ...docUser.data(), id: docUser.id })
+    //             })
+
+    //             if (isLoading) setIsLoading(false)
+    //             setFollowingUsers(allUsers)
+    //         }
+    //     )
+    //     console.log(isLoading)
+
+    //     return () => unsubscribe()
+    // }, [profileUser])
+
     if (searchUsers?.searchedUser && searchUsers?.searchedUser?.length > 0) {
-        return (
-            <>
-                <Navbar />
-                <SearchResults />
-            </>
-        )
+        return <SearchResults />
     }
 
     if (followingUsers.length > 0) {
+        console.log(followingUsers)
+        console.log(isLoading)
         return (
             <div>
-                <Navbar />
                 <Stories
                     followingUsers={followingUsers}
                     profileUser={profileUser}
@@ -99,5 +139,5 @@ export function Home({
         )
     }
 
-    return <Navbar />
+    return null
 }

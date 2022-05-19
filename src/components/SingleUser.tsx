@@ -16,6 +16,7 @@ export function SingleUser({
     const [isLoading, setIsLoadin] = useState(true)
 
     useEffect(() => {
+        console.log(user)
         const arr = getPosts(user.id)
         arr.then((arr1) => {
             setPosts(arr1)
@@ -28,7 +29,7 @@ export function SingleUser({
                 <Loading />
             ) : (
                 posts &&
-                posts.map((el: any) => {
+                posts.map((el: PostQueryType) => {
                     return (
                         <SinglePost
                             post={el}

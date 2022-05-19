@@ -6,7 +6,6 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { ReactElement, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import Navbar from '../components/Navbar'
 import { db } from '../firebase.config.js'
 import '../styles/pages/PostPreview.scss'
 import { UserQueryType } from '../UserQueryType'
@@ -23,7 +22,7 @@ export function PostPreview({
 }): ReactElement | null {
     const { id } = useParams()
     const [post, setPost] = useState<any>()
-    const [postOwner, setPostOwner] = useState<any>()
+    const [postOwner, setPostOwner] = useState<UserQueryType>()
     const [inpValue, setInpValue] = useState('')
 
     async function getPost(): Promise<void> {
@@ -39,7 +38,7 @@ export function PostPreview({
             if (docSnap1.exists()) {
                 const obj1 = { ...docSnap1.data() }
                 obj1.id = docSnap1.id
-                setPostOwner(obj1)
+                setPostOwner(obj1 as UserQueryType)
             } else {
                 console.log('error')
             }
@@ -100,7 +99,6 @@ export function PostPreview({
 
     return (
         <>
-            <Navbar />
             <ToastContainer position="top-center" />
 
             <div className="container mt-5 mb-5">
@@ -198,13 +196,6 @@ export function PostPreview({
                                                     <small className="comment-text fs-6">
                                                         {el?.comment}
                                                     </small>
-                                                    {/* <div className="d-flex flex-row align-items-center status">
-                                                        {' '}
-                                                        <small>Like</small>{' '}
-                                                        <small>Reply</small>{' '}
-                                                        <small>Translate</small>{' '}
-                                                        <small>18 mins</small>{' '}
-                                                    </div> */}
                                                 </div>
                                             </div>
                                         )

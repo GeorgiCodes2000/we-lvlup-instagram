@@ -1,13 +1,14 @@
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import { ReactElement, useEffect, useRef } from 'react'
+import { UserQueryType } from '../UserQueryType'
 
 export function ModalStoryView({
     setOpenStoryModal,
     user,
 }: {
     setOpenStoryModal: React.Dispatch<React.SetStateAction<boolean>>
-    user: any
+    user: UserQueryType
 }): ReactElement | null {
     const btnRef = useRef<HTMLButtonElement>(null)
 
@@ -48,7 +49,7 @@ export function ModalStoryView({
                         </div>
                         <div className="modal-body">
                             {' '}
-                            {user.stories.img.length > 0 ? (
+                            {user.stories && user.stories.img.length > 0 ? (
                                 <img
                                     className="story-preview"
                                     src={user.stories.img}

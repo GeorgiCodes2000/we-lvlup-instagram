@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import { Timestamp } from 'firebase/firestore'
 import { ReactElement, useEffect, useState } from 'react'
 import { UserQueryType } from '../UserQueryType'
 import { ModalStoryPreview } from './ModalStoryPreview'
@@ -12,7 +13,7 @@ export function Stories({
 
     getProfile,
 }: {
-    followingUsers: any
+    followingUsers: UserQueryType[]
     profileUser: UserQueryType
 
     getProfile: any
@@ -88,8 +89,8 @@ export function Stories({
 
                     <small>You</small>
                 </div>
-                {followingUsers.map((el: any) => {
-                    if (el.stories) {
+                {followingUsers.map((el: UserQueryType) => {
+                    if (el.stories && el.stories.expire > Timestamp.now()) {
                         return (
                             <div className="d-flex flex-column justify-content-center align-items-center mx-2">
                                 <img

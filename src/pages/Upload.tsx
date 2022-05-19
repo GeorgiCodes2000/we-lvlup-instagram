@@ -5,7 +5,6 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { ReactElement, useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
-import Navbar from '../components/Navbar'
 import { UserContext } from '../contexts/UserContext/UserContext'
 import { db, storage } from '../firebase.config.js'
 import styles from '../styles/Upload.module.scss'
@@ -66,84 +65,81 @@ export default function Upload({ profileUser }: any): ReactElement | null {
     }, [image])
 
     return (
-        <>
-            <Navbar />
-            <div className={styles.uploadContainer}>
-                <div className={styles.imgUploadContainer}>
-                    {preview ? (
-                        <img
-                            src={preview}
-                            style={{ objectFit: 'cover' }}
-                            alt="nothing"
-                            onClick={() => {
-                                setImage(undefined)
-                            }}
-                        />
-                    ) : (
-                        <button
-                            type="button"
-                            onClick={(event) => {
-                                event.preventDefault()
-                                fileInputRef.current.click()
-                                console.log('??')
-                            }}
-                            className="btn btn-outline-dark"
-                            data-mdb-ripple-color="dark"
-                            style={{ zIndex: 1 }}
-                        >
-                            Upload image
-                        </button>
-                    )}
-                </div>
-                <form>
-                    <input
-                        type="file"
-                        style={{ display: 'none' }}
-                        ref={fileInputRef}
-                        onChange={(event) => {
-                            if (event.target.files) {
-                                const file = event.target.files[0]
-                                setImage(file)
-                            }
+        <div className={styles.uploadContainer}>
+            <div className={styles.imgUploadContainer}>
+                {preview ? (
+                    <img
+                        src={preview}
+                        style={{ objectFit: 'cover' }}
+                        alt="nothing"
+                        onClick={() => {
+                            setImage(undefined)
                         }}
                     />
-
-                    <div className="input-group mb-3 pt-4">
-                        <div className="input-group-prepend">
-                            <span
-                                className="input-group-text"
-                                id="inputGroup-sizing-default"
-                            >
-                                Description
-                            </span>
-                        </div>
-                        <input
-                            type="text"
-                            className="form-control w-50"
-                            aria-label="Default"
-                            aria-describedby="inputGroup-sizing-default"
-                            value={description}
-                            onChange={(event) => {
-                                setDescription(event.target.value)
-                            }}
-                        />
-                    </div>
-
+                ) : (
                     <button
-                        type="submit"
-                        className="btn btn-dark w-25 m-auto"
-                        disabled={disabled}
+                        type="button"
                         onClick={(event) => {
                             event.preventDefault()
-                            if (image) {
-                                uploadToDb(image)
-                            }
+                            fileInputRef.current.click()
+                            console.log('??')
                         }}
+                        className="btn btn-outline-dark"
+                        data-mdb-ripple-color="dark"
+                        style={{ zIndex: 1 }}
                     >
-                        Post
+                        Upload image
                     </button>
-                </form>
+                )}
             </div>
-        </>
+            <form>
+                <input
+                    type="file"
+                    style={{ display: 'none' }}
+                    ref={fileInputRef}
+                    onChange={(event) => {
+                        if (event.target.files) {
+                            const file = event.target.files[0]
+                            setImage(file)
+                        }
+                    }}
+                />
+
+                <div className="input-group mb-3 pt-4">
+                    <div className="input-group-prepend">
+                        <span
+                            className="input-group-text"
+                            id="inputGroup-sizing-default"
+                        >
+                            Description
+                        </span>
+                    </div>
+                    <input
+                        type="text"
+                        className="form-control w-50"
+                        aria-label="Default"
+                        aria-describedby="inputGroup-sizing-default"
+                        value={description}
+                        onChange={(event) => {
+                            setDescription(event.target.value)
+                        }}
+                    />
+                </div>
+
+                <button
+                    type="submit"
+                    className="btn btn-dark w-25 m-auto"
+                    disabled={disabled}
+                    onClick={(event) => {
+                        event.preventDefault()
+                        if (image) {
+                            uploadToDb(image)
+                        }
+                    }}
+                >
+                    Post
+                </button>
+            </form>
+        </div>
     )
 }

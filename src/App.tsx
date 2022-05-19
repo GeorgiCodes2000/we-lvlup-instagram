@@ -23,6 +23,8 @@ import { SerachInputProvider } from './contexts/SearchInputContext/SearchInputPr
 import Upload from './pages/Upload'
 import { PostPreview } from './pages/PostPreview'
 import { Loading } from './components/Loading'
+import Navbar from './components/Navbar'
+import { Chat } from './pages/Chat'
 
 function App(): ReactElement | null {
     const userContext = useContext(UserContext)
@@ -67,6 +69,7 @@ function App(): ReactElement | null {
             <SerachInputProvider>
                 <SearchUserProvider>
                     <Router>
+                        <Navbar />
                         <Routes>
                             <Route path="*" element={<NotFound />} />
                             {userContext?.user.user ? (
@@ -87,6 +90,12 @@ function App(): ReactElement | null {
                                     element={
                                         <Upload profileUser={profileUser} />
                                     }
+                                />
+                            ) : null}
+                            {userContext?.user.user ? (
+                                <Route
+                                    path="/chat"
+                                    element={<Chat profileUser={profileUser} />}
                                 />
                             ) : null}
                             {userContext?.user.user ? (

@@ -6,7 +6,6 @@
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { ReactElement, useContext, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import Navbar from '../components/Navbar'
 import { SearchInputContext } from '../contexts/SearchInputContext/SearchInputContext'
 import { db } from '../firebase.config.js'
 import { SearchUserContext } from '../contexts/SearchedProfileContext/SearchedProfilesContext'
@@ -106,7 +105,6 @@ export function ProfileForeign({
 
     return (
         <>
-            <Navbar />
             {isModalFollowers && (
                 <ModalInfo
                     setIsModal={setIsModalFollowers}

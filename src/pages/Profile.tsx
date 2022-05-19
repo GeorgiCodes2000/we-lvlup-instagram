@@ -7,7 +7,6 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { Link } from 'react-router-dom'
 import { db } from '../firebase.config.js'
 import { UserQueryType } from '../UserQueryType.js'
-import Navbar from '../components/Navbar'
 import { SearchUserContext } from '../contexts/SearchedProfileContext/SearchedProfilesContext'
 import { SearchInputContext } from '../contexts/SearchInputContext/SearchInputContext'
 import UploadAvatar from '../components/UploadAvatar'
@@ -56,7 +55,6 @@ export function Profile({
     if (profileUser) {
         return (
             <>
-                <Navbar />
                 {isModalFollowers && (
                     <ModalInfo
                         setIsModal={setIsModalFollowers}

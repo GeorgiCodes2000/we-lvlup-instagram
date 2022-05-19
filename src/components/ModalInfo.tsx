@@ -14,7 +14,7 @@ export function ModalInfo({
     list: Array<string>
 }): ReactElement | null {
     const btnRef = useRef<HTMLButtonElement>(null)
-    const [infoList, setInfoList] = useState<any>([])
+    const [infoList, setInfoList] = useState<UserQueryType[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
     async function getInfoUsers(): Promise<void> {
@@ -26,7 +26,7 @@ export function ModalInfo({
                     const fetchedDoc = await getDoc(docRef)
                     const obj = { ...fetchedDoc.data() }
                     obj.id = fetchedDoc.id
-                    arr.push(obj)
+                    arr.push(obj as UserQueryType)
                     if (i === list.length - 1) {
                         setIsLoading(false)
                     }

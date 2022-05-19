@@ -2,12 +2,12 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { Timestamp } from 'firebase/firestore'
-import { ReactElement, useEffect, useState } from 'react'
+import { memo, ReactElement, useEffect, useState } from 'react'
 import { UserQueryType } from '../UserQueryType'
 import { ModalStoryPreview } from './ModalStoryPreview'
 import { ModalStoryView } from './ModalStoryView'
 
-export function Stories({
+function Stories1({
     followingUsers,
     profileUser,
 
@@ -119,3 +119,5 @@ export function Stories({
         </div>
     )
 }
+
+export const Stories = memo(Stories1)

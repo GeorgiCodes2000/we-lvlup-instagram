@@ -1,11 +1,11 @@
-import { ReactElement, useEffect, useState } from 'react'
+import { memo, ReactElement, useEffect, useState } from 'react'
 import { PostQueryType } from '../PostQueryType'
 import { UserQueryType } from '../UserQueryType'
 import { getPosts } from '../utilFunctions/currentLoggedUtils'
 import { Loading } from './Loading'
 import { SinglePost } from './SinglePost'
 
-export function SingleUser({
+function SingleUser1({
     user,
     profileUser,
 }: {
@@ -43,3 +43,5 @@ export function SingleUser({
         </div>
     )
 }
+
+export const SingleUser = memo(SingleUser1)

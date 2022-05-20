@@ -80,82 +80,84 @@ function App(): ReactElement | null {
         return (
             <SerachInputProvider>
                 <SearchUserProvider>
-                    <Suspense fallback={<Loading />}>
-                        <Router>
-                            <Navbar />
-                            <Routes>
-                                <Route path="*" element={<NotFound />} />
-                                {userContext?.user.user ? (
-                                    <Route
-                                        path="/"
-                                        element={
+                    <Router>
+                        <Navbar />
+                        <Routes>
+                            <Route path="*" element={<NotFound />} />
+                            {userContext?.user.user ? (
+                                <Route
+                                    path="/"
+                                    element={
+                                        <Suspense fallback={<Loading />}>
                                             <Home
                                                 profileUser={profileUser}
                                                 getProfile={getProfile}
                                             />
-                                        }
-                                    />
-                                ) : null}
+                                        </Suspense>
+                                    }
+                                />
+                            ) : null}
 
-                                {userContext?.user.user ? (
-                                    <Route
-                                        path="/upload"
-                                        element={
-                                            <Upload profileUser={profileUser} />
-                                        }
-                                    />
-                                ) : null}
-                                {userContext?.user.user ? (
-                                    <Route
-                                        path="/chat"
-                                        element={
-                                            <Chat profileUser={profileUser} />
-                                        }
-                                    />
-                                ) : null}
-                                {userContext?.user.user ? (
-                                    <Route
-                                        path="/post/:id"
-                                        element={
-                                            <PostPreview
-                                                profileUser={profileUser}
-                                            />
-                                        }
-                                    />
-                                ) : null}
-                                {userContext?.user.user ? (
-                                    <Route
-                                        path="/profile"
-                                        element={
+                            {userContext?.user.user ? (
+                                <Route
+                                    path="/upload"
+                                    element={
+                                        <Upload profileUser={profileUser} />
+                                    }
+                                />
+                            ) : null}
+                            {userContext?.user.user ? (
+                                <Route
+                                    path="/chat"
+                                    element={<Chat profileUser={profileUser} />}
+                                />
+                            ) : null}
+                            {userContext?.user.user ? (
+                                <Route
+                                    path="/post/:id"
+                                    element={
+                                        <PostPreview
+                                            profileUser={profileUser}
+                                        />
+                                    }
+                                />
+                            ) : null}
+                            {userContext?.user.user ? (
+                                <Route
+                                    path="/profile"
+                                    element={
+                                        <Suspense fallback={<Loading />}>
                                             <Profile
                                                 profileUser={profileUser}
                                                 getProfile={getProfile}
                                             />
-                                        }
-                                    />
-                                ) : null}
-                                {userContext?.user.user ? (
-                                    <Route
-                                        path="/profile/:id"
-                                        element={
+                                        </Suspense>
+                                    }
+                                />
+                            ) : null}
+                            {userContext?.user.user ? (
+                                <Route
+                                    path="/profile/:id"
+                                    element={
+                                        <Suspense fallback={<Loading />}>
                                             <ProfileForeign
                                                 profileUser={profileUser}
                                             />
-                                        }
-                                    />
-                                ) : null}
-                                {!userContext?.user.user ? (
-                                    <Route
-                                        path="/register"
-                                        element={<Register />}
-                                    />
-                                ) : null}
-                                {!userContext?.user.user ? (
-                                    <Route path="/login" element={<Login />} />
-                                ) : null}
-                            </Routes>
-                        </Router>
-                    </Suspense>
+                                        </Suspense>
+                                    }
+                                />
+                            ) : null}
+                            {!userContext?.user.user ? (
+                                <Route
+                                    path="/register"
+                                    element={<Register />}
+                                />
+                            ) : null}
+                            {!userContext?.user.user ? (
+                                <Route path="/login" element={<Login />} />
+                            ) : null}
+                        </Routes>
+                    </Router>
                 </SearchUserProvider>
             </SerachInputProvider>
         )

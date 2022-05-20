@@ -1,10 +1,16 @@
-import { ReactElement, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { ReactElement, useContext, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../contexts/UserContext/UserContext'
 import '../styles/pages/404.scss'
 
 export function NotFound(): ReactElement | null {
     const user = useContext(UserContext)
+    const navigate = useNavigate()
+    useEffect(() => {
+        if (!user?.user?.user?.email) {
+            navigate('/login')
+        }
+    })
     return (
         <>
             <header>

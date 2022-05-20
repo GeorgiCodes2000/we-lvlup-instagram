@@ -16,7 +16,7 @@ import { PostQueryType } from '../PostQueryType.js'
 import { Loading } from '../components/Loading'
 import { ModalInfo } from '../components/ModalInfo'
 
-export function Profile({
+function Profile({
     profileUser,
     getProfile,
 }: {
@@ -262,3 +262,5 @@ export function Profile({
     }
     return <Loading />
 }
+
+export default Profile

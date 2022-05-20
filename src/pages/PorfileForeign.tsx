@@ -14,7 +14,7 @@ import { getPosts } from '../utilFunctions/currentLoggedUtils'
 import { PostQueryType } from '../PostQueryType'
 import { ModalInfo } from '../components/ModalInfo'
 
-export function ProfileForeign({
+function ProfileForeign({
     profileUser,
 }: {
     profileUser: any
@@ -264,3 +264,5 @@ export function ProfileForeign({
         </>
     )
 }
+
+export default ProfileForeign

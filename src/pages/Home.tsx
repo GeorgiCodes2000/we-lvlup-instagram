@@ -21,7 +21,7 @@ import { Stories } from '../components/Stories'
 
 // import { SearchInputContext } from '../contexts/SearchInputContext/SearchInputContext'
 
-export function Home({
+function Home({
     profileUser,
     getProfile,
 }: {
@@ -141,3 +141,5 @@ export function Home({
 
     return null
 }
+
+export default Home

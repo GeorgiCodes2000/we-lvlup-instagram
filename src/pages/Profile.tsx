@@ -81,7 +81,10 @@ function Profile({
                                     >
                                         <div
                                             className="ms-4 mt-5 d-flex flex-column"
-                                            style={{ width: '150px' }}
+                                            style={{
+                                                width: '150px',
+                                                height: '150px',
+                                            }}
                                         >
                                             {profileUser &&
                                                 profileUser.avatar.length >
@@ -92,6 +95,11 @@ function Profile({
                                                         className="img-fluid img-thumbnail mt-4 mb-2"
                                                         style={{
                                                             width: '150px',
+                                                            height: '150px',
+                                                            minWidth: '100%',
+                                                            minHeight: '100%',
+                                                            maxWidth: '100%',
+                                                            maxHeight: '100%',
                                                             zIndex: 1,
                                                         }}
                                                     />
@@ -244,7 +252,9 @@ function Profile({
                                                             <img
                                                                 src={el['img']}
                                                                 alt=" 1"
-                                                                className="w-100 rounded-3"
+                                                                className={
+                                                                    style.itemImage
+                                                                }
                                                             />
                                                         </div>
                                                     </Link>

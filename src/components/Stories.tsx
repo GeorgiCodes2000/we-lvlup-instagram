@@ -61,22 +61,21 @@ export function Stories({
                             setOpenStoryModalId(profileUser.id)
                         }}
                     />
-                    <button type="button" id="buttonForStory">
-                        <input
-                            type="file"
-                            style={{ display: 'none' }}
-                            id="storyInput"
-                            onChange={(event) => {
-                                if (event.target.files) {
-                                    const file = event.target.files[0]
-                                    setImage(file)
-                                }
-                            }}
-                        />
-                        <label htmlFor="storyInput" id="buttonForStory">
-                            <i className="fas fa-plus" />
-                        </label>
-                    </button>
+
+                    <input
+                        type="file"
+                        style={{ display: 'none' }}
+                        id="storyInput"
+                        onChange={(event) => {
+                            if (event.target.files) {
+                                const file = event.target.files[0]
+                                setImage(file)
+                            }
+                        }}
+                    />
+                    <label htmlFor="storyInput" id="buttonForStory">
+                        <i className="fas fa-plus" />
+                    </label>
 
                     {openStoryModal &&
                     profileUser.id === openStoryModalId &&

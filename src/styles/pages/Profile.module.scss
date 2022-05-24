@@ -1,5 +1,6 @@
 .item {
-    width: 100%
+    width: 100%;
+    height: 350px;
   }
   
   .container {
@@ -11,5 +12,31 @@
   .container > a {
     width: 47%; /* or - flex: 0 50% - or - flex-basis: 50% - */
     /*demo*/
-     margin-bottom: 10px;
+    height: 350px;
+    margin-bottom: 10px;
+  }
+
+  .itemImage{
+    max-width: 100%;
+    max-height: 100%;
+    min-width: 100%;
+    min-height:100%;
+    
+  }
+
+  @media only screen and (min-width: 320px) and (max-width: 650px) {
+     
+    .item {
+      width: 100%;
+      height: 250px;
+    }
+    
+     
+    
+    .container > a {
+      width: 47%; /* or - flex: 0 50% - or - flex-basis: 50% - */
+      /*demo*/
+      height: 250px;
+      margin-bottom: 10px;
+    }
   }

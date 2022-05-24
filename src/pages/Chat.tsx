@@ -8,7 +8,7 @@ import { db } from '../firebase.config.js'
 import '../styles/pages/chat.scss'
 import { UserQueryType } from '../UserQueryType'
 
-export function Chat({
+function Chat({
     profileUser,
 }: {
     profileUser: UserQueryType
@@ -87,3 +87,5 @@ export function Chat({
         </main>
     )
 }
+
+export default Chat

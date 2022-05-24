@@ -248,7 +248,9 @@ function ProfileForeign({
                                                         <img
                                                             src={el['img']}
                                                             alt=" 1"
-                                                            className="w-100 rounded-3"
+                                                            className={
+                                                                style.itemImage
+                                                            }
                                                         />
                                                     </div>
                                                 </Link>

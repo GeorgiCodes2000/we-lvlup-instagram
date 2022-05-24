@@ -32,11 +32,12 @@ import Upload from './pages/Upload'
 import { PostPreview } from './pages/PostPreview'
 import { Loading } from './components/Loading'
 import Navbar from './components/Navbar'
-import { Chat } from './pages/Chat'
+// import { Chat } from './pages/Chat'
 
 const Home = lazy(() => import('./pages/Home'))
 const ProfileForeign = lazy(() => import('./pages/PorfileForeign'))
 const Profile = lazy(() => import('./pages/Profile'))
+const Chat = lazy(() => import('./pages/Chat'))
 
 function App(): ReactElement | null {
     const userContext = useContext(UserContext)
@@ -109,7 +110,11 @@ function App(): ReactElement | null {
                             {userContext?.user.user ? (
                                 <Route
                                     path="/chat"
-                                    element={<Chat profileUser={profileUser} />}
+                                    element={
+                                        <Suspense fallback={<Loading />}>
+                                            <Chat profileUser={profileUser} />
+                                        </Suspense>
+                                    }
                                 />
                             ) : null}
                             {userContext?.user.user ? (

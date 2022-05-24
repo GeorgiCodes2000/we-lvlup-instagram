@@ -1,4 +1,6 @@
-import { ReactElement, useContext, useEffect } from 'react'
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+import { ReactElement, useContext, useEffect, useState } from 'react'
 import '../styles/pages/navbar.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import { signOut } from 'firebase/auth'
@@ -19,7 +21,10 @@ function Navbar(): ReactElement | null {
     const user = useContext(UserContext)
     const input = useContext(SearchInputContext)
     const searchUsers = useContext(SearchUserContext)
+    const [isSearch, setIsSearch] = useState(false)
     const navigate = useNavigate()
+
+    console.log('navbar render')
 
     async function getProfile(): Promise<void> {
         const arr: UserQueryType[] = []
@@ -75,43 +80,86 @@ function Navbar(): ReactElement | null {
     }, [input?.input])
 
     return (
-        <div className="navigation">
-            <div className="logo">
-                <Link className="no-underline" to="/">
-                    {/* {user?.user.user?.email} */}
-                    Instagram
-                </Link>
-            </div>
-            <div className="navigation-search-container">
-                <i className="fa fa-search" />
-                <input
-                    className="search-field"
-                    type="text"
-                    placeholder="Search"
-                    value={input?.input}
-                    onChange={(event) => {
-                        input?.setInput(event.target.value)
-                    }}
-                />
-                <div className="search-container">
-                    <div className="search-container-box">
-                        <div className="search-results" />
+        <>
+            <div className="navigation">
+                <div className="logo">
+                    <Link className="no-underline" to="/">
+                        {/* {user?.user.user?.email} */}
+                        Instagram
+                    </Link>
+                </div>
+
+                <div className="navigation-search-container">
+                    <i className="fa fa-search" />
+
+                    <input
+                        className="search-field"
+                        type="text"
+                        placeholder="Search"
+                        value={input?.input}
+                        onChange={(event) => {
+                            input?.setInput(event.target.value)
+                        }}
+                    />
+
+                    <div className="search-container">
+                        <div className="search-container-box">
+                            <div className="search-results" />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="navigation-icons">
-                <Link to="/upload" className="navigation-link">
-                    <i className="fas fa-plus" />
-                </Link>
 
-                <Link to="/profile" className="navigation-link">
-                    <i className="far fa-user-circle" />
-                </Link>
-                <Link to="/" className="navigation-link" onClick={signUserOut}>
-                    <i className="fas fa-sign-out-alt" />
-                </Link>
+                <div className="navigation-icons">
+                    <i
+                        className="fas fa-search"
+                        id="search-icon"
+                        onClick={() => setIsSearch(!isSearch)}
+                    />
+
+                    <Link to="/chat" className="navigation-link">
+                        <i className="fab fa-rocketchat" />
+                    </Link>
+
+                    <Link to="/upload" className="navigation-link">
+                        <i className="fas fa-plus" />
+                    </Link>
+
+                    <Link to="/profile" className="navigation-link">
+                        <i className="far fa-user-circle" />
+                    </Link>
+                    <Link
+                        to="/"
+                        className="navigation-link"
+                        onClick={signUserOut}
+                    >
+                        <i className="fas fa-sign-out-alt" />
+                    </Link>
+                </div>
             </div>
-        </div>
+            {isSearch && (
+                <div className="mobile-search mt-3">
+                    <div className="input-group flex-nowrap w-75">
+                        <span className="input-group-text" id="addon-wrapping">
+                            <i
+                                className="fas fa-search"
+                                onClick={() => setIsSearch(!isSearch)}
+                            />
+                        </span>
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Search User"
+                            aria-label="Username"
+                            aria-describedby="addon-wrapping"
+                            value={input?.input}
+                            onChange={(event) => {
+                                input?.setInput(event.target.value)
+                            }}
+                        />
+                    </div>
+                </div>
+            )}
+        </>
     )
 }
 

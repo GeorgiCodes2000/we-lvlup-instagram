@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { ReactElement, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { PostQueryType } from '../PostQueryType'
@@ -63,10 +64,15 @@ export function SinglePost({
                             to={`/post/${postLocal.id}`}
                             className="text-center"
                         >
-                            <img
+                            {/* <img
                                 src={post?.img}
                                 className="img-fluid"
                                 alt="1"
+                            /> */}
+                            <LazyLoadImage
+                                className="img-fluid"
+                                alt="1"
+                                src={post?.img}
                             />
                         </Link>
                         <div className="p-2">

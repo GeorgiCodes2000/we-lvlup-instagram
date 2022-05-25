@@ -10,7 +10,7 @@ import {
     Timestamp,
     where,
 } from 'firebase/firestore'
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useEffect, useRef, useState } from 'react'
 import { db } from '../firebase.config.js'
 import { UserQueryType } from '../UserQueryType'
 
@@ -25,6 +25,7 @@ export function ChatHead({
     // const [messageSent, setMessagesSent] = useState<any>([])
     // const [messageRecieved, setMessagesRecieved] = useState<any>([])
     const [allMessages, setAllMessages] = useState<any>([])
+    const scrollRef = useRef<HTMLDivElement>(null)
 
     async function sendMessage(): Promise<void> {
         const obj = {
@@ -38,48 +39,8 @@ export function ChatHead({
 
         await addDoc(messages, obj)
         setMessage('')
+        scrollRef.current?.scrollIntoView()
     }
-
-    // async function queryMessages(): Promise<void> {
-    //     if (friendUser?.id && profileUser.id) {
-    //         const arrSent: any = []
-    //         const arrRecieved: any = []
-
-    //         const messagesIsent = query(
-    //             collection(db, 'messages'),
-    //             where('sender', '==', profileUser.id),
-    //             where('reciever', '==', friendUser?.id),
-    //             orderBy('createdAt', 'asc')
-    //         )
-    //         const messagesIRecieved = query(
-    //             collection(db, 'messages'),
-    //             where('sender', '==', friendUser?.id),
-    //             where('reciever', '==', profileUser.id),
-    //             orderBy('createdAt', 'asc')
-    //         )
-    //         if (messagesIsent) {
-    //             const querySnapshot = await getDocs(messagesIsent)
-    //             querySnapshot.forEach((doc: any) => {
-    //                 // doc.data() is never undefined for query doc snapshots
-    //                 const obj = { ...doc.data() }
-    //                 obj.id = doc.id
-    //                 arrSent.push(obj)
-    //             })
-    //         }
-    //         if (messagesIRecieved) {
-    //             const querySnapshot = await getDocs(messagesIRecieved)
-    //             querySnapshot.forEach((doc: any) => {
-    //                 // doc.data() is never undefined for query doc snapshots
-    //                 const obj = { ...doc.data() }
-    //                 obj.id = doc.id
-    //                 arrRecieved.push(obj)
-    //             })
-    //         }
-
-    //         const concatArr = arrRecieved.concat(arrSent)
-    //         setAllMessages(concatArr)
-    //     }
-    // }
 
     useEffect(() => {
         if (friendUser?.id && profileUser.id) {
@@ -141,23 +102,28 @@ export function ChatHead({
                             ? allMessages.map((el: any) => {
                                   if (el.sender === profileUser.id) {
                                       return (
-                                          <div
-                                              className="chat-message-right pb-4"
-                                              key={el.id}
-                                          >
-                                              <div>
-                                                  <img
-                                                      src={profileUser.avatar}
-                                                      className="rounded-circle mr-1"
-                                                      alt="Chris Wood"
-                                                      width="40"
-                                                      height="40"
-                                                  />
+                                          <>
+                                              <div
+                                                  className="chat-message-right pb-4"
+                                                  key={el.id}
+                                              >
+                                                  <div>
+                                                      <img
+                                                          src={
+                                                              profileUser.avatar
+                                                          }
+                                                          className="rounded-circle mr-1"
+                                                          alt="Chris Wood"
+                                                          width="40"
+                                                          height="40"
+                                                      />
+                                                  </div>
+                                                  <div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+                                                      {el.message}
+                                                  </div>
                                               </div>
-                                              <div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
-                                                  {el.message}
-                                              </div>
-                                          </div>
+                                              <div ref={scrollRef} />
+                                          </>
                                       )
                                   }
                                   if (el.sender === friendUser.id) {
@@ -199,6 +165,7 @@ export function ChatHead({
                             value={message}
                             onChange={(event) => setMessage(event.target.value)}
                         />
+
                         <button
                             className="btn btn-primary"
                             type="button"

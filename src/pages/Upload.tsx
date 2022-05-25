@@ -105,7 +105,7 @@ export default function Upload({ profileUser }: any): ReactElement | null {
                     }}
                 />
 
-                <div className="input-group mb-3 pt-4">
+                <div className="input-group mb-3 pt-4 w-100">
                     <div className="input-group-prepend">
                         <span
                             className="input-group-text"
@@ -116,7 +116,7 @@ export default function Upload({ profileUser }: any): ReactElement | null {
                     </div>
                     <input
                         type="text"
-                        className="form-control w-50"
+                        className="form-control "
                         aria-label="Default"
                         aria-describedby="inputGroup-sizing-default"
                         value={description}

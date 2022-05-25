@@ -140,6 +140,11 @@ function ProfileForeign({
                                                 className="img-fluid img-thumbnail mt-4 mb-2"
                                                 style={{
                                                     width: '150px',
+                                                    height: '150px',
+                                                    minWidth: '100%',
+                                                    minHeight: '100%',
+                                                    maxWidth: '100%',
+                                                    maxHeight: '100%',
                                                     zIndex: 1,
                                                 }}
                                             />

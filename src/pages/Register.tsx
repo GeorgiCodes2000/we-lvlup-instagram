@@ -18,7 +18,17 @@ export function Register(): ReactElement | null {
     const [username, setUsername] = useState('')
     const [disabled, setDisabled] = useState(false)
 
-    const notify = (): any => toast.error('Email already in use !')
+    const notify = (message: string): any => {
+        console.log(message)
+        switch (message) {
+            case 'Password':
+                toast.error('Password should be at least 6 characters')
+                break
+            default:
+                toast.error('Email already in use !')
+                break
+        }
+    }
 
     async function registerUser(
         registerEmailInp: string,
@@ -54,7 +64,12 @@ export function Register(): ReactElement | null {
             })
         } catch (error) {
             if (error instanceof Error) {
-                notify()
+                if (error.message.indexOf('Password') > -1) {
+                    notify('Password')
+                } else {
+                    notify('no')
+                }
+
                 setDisabled(false)
                 console.log(error)
             }

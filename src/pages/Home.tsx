@@ -85,6 +85,12 @@ function Home({
         )
     }
 
+    if (followingUsers.length === 0 && isLoading === false) {
+        return (
+            <h1 className="text-center mt-3">You are not following anybody.</h1>
+        )
+    }
+
     return null
 }
 

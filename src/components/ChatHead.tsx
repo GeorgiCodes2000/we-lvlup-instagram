@@ -59,7 +59,6 @@ export function ChatHead({
                 (querySnapshot: QuerySnapshot<DocumentData>) => {
                     const arrTotal: any = []
                     querySnapshot.forEach((docUser) => {
-                        console.log(docUser.data())
                         arrTotal.push({
                             ...docUser.data(),
                             id: docUser.id,
@@ -88,6 +87,9 @@ export function ChatHead({
                                 alt="Sharon Lessman"
                                 width="40"
                                 height="40"
+                                style={{
+                                    objectFit: 'cover',
+                                }}
                             />
                         </div>
                         <div className="flex-grow-1 pl-3 ms-2">
@@ -116,6 +118,10 @@ export function ChatHead({
                                                           alt="Chris Wood"
                                                           width="40"
                                                           height="40"
+                                                          style={{
+                                                              objectFit:
+                                                                  'cover',
+                                                          }}
                                                       />
                                                   </div>
                                                   <div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
@@ -139,6 +145,9 @@ export function ChatHead({
                                                       alt="Sharon Lessman"
                                                       width="40"
                                                       height="40"
+                                                      style={{
+                                                          objectFit: 'cover',
+                                                      }}
                                                   />
                                               </div>
                                               <div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">

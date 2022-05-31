@@ -100,6 +100,7 @@ function Profile({
                                                             minHeight: '100%',
                                                             maxWidth: '100%',
                                                             maxHeight: '100%',
+                                                            objectFit: 'cover',
                                                             zIndex: 1,
                                                         }}
                                                     />
@@ -111,8 +112,9 @@ function Profile({
                                                 data-mdb-ripple-color="dark"
                                                 style={{ zIndex: 1 }}
                                                 onClick={() => setEdit(!edit)}
+                                                id={style.followBtn}
                                             >
-                                                Edit profile
+                                                Edit Profile
                                             </button>
                                         </div>
                                         <div
@@ -229,12 +231,6 @@ function Profile({
                                                     {profileUser?.aboutInfo}
                                                 </p>
                                             </div>
-                                        </div>
-
-                                        <div className="d-flex justify-content-between align-items-center mb-4">
-                                            <p className="lead fw-normal mb-0">
-                                                Photos
-                                            </p>
                                         </div>
 
                                         <div className={style.container}>

@@ -21,6 +21,9 @@ export function SearchResults(): ReactElement | null {
                                 alt="100x100"
                                 src={el.avatar}
                                 data-holder-rendered="true"
+                                style={{
+                                    objectFit: 'cover',
+                                }}
                             />
                             <p>{el.fullNameInp}</p>
                         </div>

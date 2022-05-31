@@ -40,7 +40,7 @@ export function ModalStoryPreview({
                 `/${userContext?.user.user.uid}/${image.name + uuidv4()}`
             )
             const uploadTask = uploadBytesResumable(storageRef, image)
-            console.log(uploadTask)
+
             uploadTask.on(
                 'state_changed',
                 () => {

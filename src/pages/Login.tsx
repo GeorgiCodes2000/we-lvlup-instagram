@@ -77,6 +77,7 @@ export function Login(): ReactElement | null {
                                         name="email"
                                         placeholder="Mobile Number or Email"
                                         type="email"
+                                        required
                                         id="email"
                                         onChange={(e) =>
                                             setLoginEmail(e.target.value)
@@ -93,6 +94,7 @@ export function Login(): ReactElement | null {
                                         placeholder="Password"
                                         type="password"
                                         id="password"
+                                        required
                                         onChange={(e) =>
                                             setLoginPassword(e.target.value)
                                         }

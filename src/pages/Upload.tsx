@@ -82,7 +82,6 @@ export default function Upload({ profileUser }: any): ReactElement | null {
                         onClick={(event) => {
                             event.preventDefault()
                             fileInputRef.current.click()
-                            console.log('??')
                         }}
                         className="btn btn-outline-dark"
                         data-mdb-ripple-color="dark"

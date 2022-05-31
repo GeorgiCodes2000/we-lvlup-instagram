@@ -16,7 +16,6 @@ export function SingleUser({
     const [isLoading, setIsLoadin] = useState(true)
 
     useEffect(() => {
-        console.log(user)
         const arr = getPosts(user.id)
         arr.then((arr1) => {
             setPosts(arr1)

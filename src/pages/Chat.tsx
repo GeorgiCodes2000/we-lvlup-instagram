@@ -22,7 +22,7 @@ function Chat({
             collection(db, 'users'),
             where('followers', 'array-contains-any', [profileUser.id])
         )
-        console.log(users)
+
         const querySnapshot = await getDocs(users)
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
@@ -50,6 +50,7 @@ function Chat({
                                 return (
                                     <div
                                         className="list-group-item list-group-item-action border-0"
+                                        style={{ cursor: 'pointer' }}
                                         onClick={() => {
                                             setFriendUser(el)
                                         }}
@@ -61,6 +62,7 @@ function Chat({
                                                 alt="Vanessa Tucker"
                                                 width="40"
                                                 height="40"
+                                                style={{ objectFit: 'cover' }}
                                             />
                                             <div className="flex-grow-1 ml-3">
                                                 {el.fullNameInp}

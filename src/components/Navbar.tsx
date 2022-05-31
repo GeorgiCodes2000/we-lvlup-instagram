@@ -24,13 +24,10 @@ function Navbar(): ReactElement | null {
     const [isSearch, setIsSearch] = useState(false)
     const navigate = useNavigate()
 
-    console.log('navbar render')
-
     async function getProfile(): Promise<void> {
         const arr: UserQueryType[] = []
         const text = input?.input
-        console.log(arr)
-        console.log(text)
+
         const end = text?.replace(/.$/, (c: string) =>
             String.fromCharCode(c.charCodeAt(0) + 1)
         )

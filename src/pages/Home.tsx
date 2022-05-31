@@ -63,8 +63,6 @@ function Home({
     }
 
     if (followingUsers.length > 0) {
-        console.log(followingUsers)
-        console.log(isLoading)
         return (
             <div>
                 <Stories

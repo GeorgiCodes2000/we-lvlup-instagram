@@ -56,6 +56,7 @@ export function Stories({
                         src={profileUser.avatar}
                         className="circular--square"
                         alt={profileUser.fullNameInp}
+                        style={{ objectFit: 'cover' }}
                         onClick={() => {
                             setOpenStoryModal(true)
                             setOpenStoryModalId(profileUser.id)
@@ -96,6 +97,10 @@ export function Stories({
                                     src={el.avatar}
                                     className="circular--square"
                                     alt={el.fullNameInp}
+                                    style={{
+                                        cursor: 'pointer',
+                                        objectFit: 'cover',
+                                    }}
                                     onClick={() => {
                                         setOpenStoryModal(true)
                                         setOpenStoryModalId(el.id)

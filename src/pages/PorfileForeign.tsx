@@ -144,6 +144,7 @@ function ProfileForeign({
                                                     minWidth: '100%',
                                                     minHeight: '100%',
                                                     maxWidth: '100%',
+                                                    objectFit: 'cover',
                                                     maxHeight: '100%',
                                                     zIndex: 1,
                                                 }}
@@ -156,6 +157,7 @@ function ProfileForeign({
                                             data-mdb-ripple-color="dark"
                                             style={{ zIndex: 1 }}
                                             onClick={follow}
+                                            id={style.followBtn}
                                         >
                                             {followBtn ? 'Unfollow' : 'Follow'}
                                         </button>
@@ -230,16 +232,6 @@ function ProfileForeign({
                                                 {user?.aboutInfo}
                                             </p>
                                         </div>
-                                    </div>
-                                    <div className="d-flex justify-content-between align-items-center mb-4">
-                                        <p className="lead fw-normal mb-0">
-                                            Recent photos
-                                        </p>
-                                        <p className="mb-0">
-                                            <a href="#!" className="text-muted">
-                                                Show all
-                                            </a>
-                                        </p>
                                     </div>
 
                                     <div className={style.container}>

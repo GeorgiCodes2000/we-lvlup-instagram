@@ -62,13 +62,13 @@ export function Login(): ReactElement | null {
                                     </p>
                                 </div>
                                 <div className="mb-3">
-                                    <a
+                                    <button
                                         type="button"
-                                        className="btn btn-primary d-block bg-gradient"
+                                        className="btn btn-primary d-block bg-gradient w-100"
                                     >
                                         <i className="fab fa-google" /> Log in
                                         with Google
-                                    </a>
+                                    </button>
                                     <p className="my-3 text-center or">OR</p>
                                 </div>
                                 <div className="form-floating mb-3">

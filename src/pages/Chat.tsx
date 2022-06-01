@@ -54,6 +54,7 @@ function Chat({
                                         onClick={() => {
                                             setFriendUser(el)
                                         }}
+                                        key={el.id}
                                     >
                                         <div className="d-flex align-items-start">
                                             <img

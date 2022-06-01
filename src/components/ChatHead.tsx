@@ -10,7 +10,7 @@ import {
     Timestamp,
     where,
 } from 'firebase/firestore'
-import { ReactElement, useEffect, useRef, useState } from 'react'
+import { Fragment, ReactElement, useEffect, useRef, useState } from 'react'
 import { db } from '../firebase.config.js'
 import { UserQueryType } from '../UserQueryType'
 
@@ -104,10 +104,10 @@ export function ChatHead({
                             ? allMessages.map((el: any) => {
                                   if (el.sender === profileUser.id) {
                                       return (
-                                          <>
+                                          <Fragment key={el.id}>
                                               <div
-                                                  className="chat-message-right pb-4"
                                                   key={el.id}
+                                                  className="chat-message-right pb-4"
                                               >
                                                   <div>
                                                       <img
@@ -129,14 +129,14 @@ export function ChatHead({
                                                   </div>
                                               </div>
                                               <div ref={scrollRef} />
-                                          </>
+                                          </Fragment>
                                       )
                                   }
                                   if (el.sender === friendUser.id) {
                                       return (
                                           <div
-                                              className="chat-message-left pb-4"
                                               key={el.id}
+                                              className="chat-message-left pb-4"
                                           >
                                               <div>
                                                   <img

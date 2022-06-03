@@ -92,7 +92,10 @@ export function Stories({
                 {followingUsers.map((el: UserQueryType) => {
                     if (el.stories && el.stories.expire > Timestamp.now()) {
                         return (
-                            <div className="d-flex flex-column justify-content-center align-items-center mx-2">
+                            <div
+                                className="d-flex flex-column justify-content-center align-items-center mx-2"
+                                key={el.id}
+                            >
                                 <img
                                     src={el.avatar}
                                     className="circular--square"
